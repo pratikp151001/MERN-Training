@@ -73,8 +73,33 @@ function hello(name : string) : string{
 }
 console.log(hello("Pratik"))
 
+const names: string[] = [];
+names.push("Dylan"); 
+names.push("Pratik"); 
+console.log(names);
 
 
+let ourTuple: [number, boolean, string];
+ourTuple = [5, false, 'Coding God was here'];
+
+console.log(ourTuple);
+
+
+let object:{name:string,id?:number,email?:string}={
+    name:"Pratik",
+    // id:5,
+    // email:"eav@gamil.com"
+};
+
+console.log(object);
+
+
+enum Grade{
+A=1,
+B,
+C
+}
+console.log(Grade.B)
 //    for (i = 1; i <= rows; ++i, k = 0) {
 //       for (space = 1; space <= rows - i; ++space) {
 //          printf("  ");
