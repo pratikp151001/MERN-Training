@@ -14,14 +14,13 @@ async function GetDBData() {
     .then(() => { console.log("Connection successfull....") })
     .catch(() => console.log("err"));
 
-
   const userSchema = new mongoose.Schema({
     name: String
   });
 
   app.get('/users',middleware, async (req, res) => {
     const User = mongoose.model('practice', userSchema);
-    let userData = await User.find({})
+    let userData = await User.find({name:"Pratik"})
       res.send(userData);
     });
   };
@@ -33,7 +32,7 @@ async function GetDBData() {
 })
 const middleware=(req :Request,res:Response,next:NextFunction)=>{
     console.log("middleware");
-    next()
+   next()
 }
   
 // app.get()

@@ -1,18 +1,20 @@
 import express from 'express'
 import {add} from './calculation'
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 // import axios from 'axios'
 
 const app=express()
 
 
-function divide(a:number,b:number){
+function divide(a:number,b:number):Promise<number>{
     return new Promise((resolve,reject)=>{
         if(b==0){
             reject(new Error("can't dicide by 0"))
         }
+        else{
         resolve(a/b)
+        }
     })
 }
 
@@ -43,6 +45,6 @@ app.post('/',async(req,res)=>{
 })
 
 
-app.listen(8080,()=>{
-    console.log("Listening on port number 8080");
+app.listen(8081,()=>{
+    console.log("Listening on port number 8081");
 })
