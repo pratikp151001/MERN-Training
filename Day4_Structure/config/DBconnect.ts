@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 import dotenv from 'dotenv'
 dotenv.config({path:".env"});
-const connectionString= process.env.DBString || "mongodb://127.0.0.1:27017/Test5"
+const connectionString= process.env.DBString || "mongodb://127.0.0.1:27017/Test"
 
 // async function GetDBData() {
     
