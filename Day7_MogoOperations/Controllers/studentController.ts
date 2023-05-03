@@ -18,7 +18,7 @@ class userController {
 
 
         try {
-            //  let userData = await student.find({Student_marks:{$gt:80}})
+            //  let userData = await student.find({Student_marks:{$gt:95}})
             //    let userData = await student.find({Student_email:{$eq:"eberget4@hugedomains.com"}})
             //   let userData = await student.find({$and:[{Student_marks:{$gt:50}},{Student_marks:{$lt:80}}]})
             //   let userData = await student.find({$or:[{Student_marks:{$gt:80}},{Student_gender:"M"}]})
@@ -106,18 +106,12 @@ class userController {
                         as: 'selectedsubjects'
                     }
                 },
+                // {   $unwind:"$selectedsubjects" },
                 {
-                    $project:
-                    {
-                        _id:1,
-                        Student_first_name:1,
-                        Student_first_email:1,
-                        selectedsubjects:{
-                            _id:'$selectedsubjects.subject_name'
-                        }
+                    $match:{
+                        $and:[{"selectedsubjects.subject_name" : {$eq : "English"}}]
                     }
-
-                }
+                },
 
             ])
 

@@ -9,3 +9,11 @@
 5. set start in package.json
 . npm start     to run project
 
+
+
+<!-- Prisma -->
+
+npx prisma db push--Schema prototyping with db push
+
+To create a migration that adds the new tags field, run the migrate dev command:
+npx prisma migrate dev --name added-tags
