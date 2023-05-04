@@ -1,19 +1,20 @@
-import { CourseModel } from "../../Models/CourseModel/CourseModel";
+import { SchoolModel } from "../../Models/schoolModel/schoolModel"
 import { Request, Response } from "express";
-import CourseRepositary from "../../repository/index"
+import SchoolRepo from "../../repository/index"
 import { responseModel } from "../../Interface/ResponseInterface";
 
-const getcourse = async (req: Request, res: Response) => {
-    console.log("DSgvsd")
+
+const getschool = async (req: Request, res: Response) => {
+    console.log("get School Called")
 
     try {
-        let Course = await CourseRepositary.CourseRepository.getCourse()
+        let Course = await SchoolRepo.SchoolRepo.getSchool()
 
         let response: responseModel = {
             status: 200,
             data: Course,
             error: null,
-            message: "Course Get successfully",
+            message: "School Get successfully",
         }
         res.send(response)
     }
@@ -23,7 +24,7 @@ const getcourse = async (req: Request, res: Response) => {
             status: 400,
             data: null,
             error: error as string,
-            message: "Fail to get Corse",
+            message: "Fail to get School",
         }
         res.send(response)
 
@@ -31,24 +32,25 @@ const getcourse = async (req: Request, res: Response) => {
 }
 
 
-const SaveCourse = async (req: Request, res: Response) => {
-    console.log("Save Course called")
+const SaveSchool = async (req: Request, res: Response) => {
+    console.log("Save school called")
     try {
-        const courseToAdd: CourseModel = {
-            courseCode: req.body.courseCode,
-            studentId: req.body.studentId,
-            isCompulsary: req.body.isCompulsary,
-            teacherId: req.body.teacherId
+        const SchoolToAdd: SchoolModel = {
+            address: req.body.address,
+            schoolNAme: req.body.schoolNAme,
+            studentsIds: req.body.studentsIds
 
         }
 
-        let course = await CourseRepositary.CourseRepository.AddCourseTODB(courseToAdd)
+        console.log(SchoolToAdd)
+
+        let course = await SchoolRepo.SchoolRepo.AddSchoolTODB(SchoolToAdd)
 
         let response: responseModel = {
             status: 200,
             data: course,
             error: null,
-            message: "course Posted successfully",
+            message: "School Posted successfully",
         }
         res.send(response)
     }
@@ -59,7 +61,7 @@ const SaveCourse = async (req: Request, res: Response) => {
             status: 200,
             data: null,
             error: error as string,
-            message: "Fail to post staff",
+            message: "Fail to post School",
         }
         res.send(response)
 
@@ -67,12 +69,11 @@ const SaveCourse = async (req: Request, res: Response) => {
 }
 
 
-
-const deleteCourse = async (req: Request, res: Response) => {
-    console.log("Delete controller called")
+const deleteSchool = async (req: Request, res: Response) => {
+    console.log("Delete school controller called")
     try {
         var idtodelete = req.params.id
-        const student = await CourseRepositary.CourseRepository.deleteCourse(idtodelete)
+        const school = await SchoolRepo.SchoolRepo.deleteSchool(idtodelete)
         let response: responseModel = {
             status: 200,
             data: null,
@@ -94,26 +95,21 @@ const deleteCourse = async (req: Request, res: Response) => {
     }
 }
 
-
-
-
-const updateCourse = async (req: Request, res: Response) => {
-    console.log("update Satff called")
+const updateSchool = async (req: Request, res: Response) => {
+    console.log("update school called")
 
     try {
         var idtoupdate = req.params.id
         console.log(idtoupdate)
-
-        const courseToAdd: CourseModel = {
-            courseCode: req.body.courseCode,
-            studentId: req.body.studentId,
-            isCompulsary: req.body.isCompulsary,
-            teacherId: req.body.teacherId
+        const SchoolToAdd: SchoolModel = {
+            address: req.body.address,
+            schoolNAme: req.body.schoolNAme,
+            studentsIds: req.body.studentsIds
 
         }
 
         // const student = await StudentRepositary.StudentRepositary.DeleteStudent(idtodelete)
-        const Course = await CourseRepositary.CourseRepository.UpdateCourse(courseToAdd, idtoupdate)
+        const Course = await SchoolRepo.SchoolRepo.UpdateSchool(SchoolToAdd, idtoupdate)
         let response: responseModel = {
             status: 200,
             data: Course,
@@ -137,19 +133,18 @@ const updateCourse = async (req: Request, res: Response) => {
 }
 
 
-
-const SearchInCourse = async (req: Request, res: Response) => {
-
+const SearchAPI = async (req: Request, res: Response) => {
+    console.log("Search APi Called")
     try {
-        var wordToSearch = req.query
-        console.log(wordToSearch)
-        let course = await CourseRepositary.CourseRepository.search(wordToSearch)
+        var sortBy = req.params.sortBy
+        console.log(sortBy)
+        let course = await SchoolRepo.SchoolRepo.search(sortBy)
         // console.log("get studebt called", students)
         let response: responseModel = {
             status: 200,
             data: course,
             error: null,
-            message: "Course Get successfully",
+            message: "School Get successfully",
         }
         // console.log(response.data)
 
@@ -162,11 +157,13 @@ const SearchInCourse = async (req: Request, res: Response) => {
             status: 400,
             data: null,
             error: error as string,
-            message: "Fail to get Course",
+            message: "Fail to get School",
         }
 
         res.send(response)
 
     }
 }
-export default { getcourse, SaveCourse, deleteCourse, updateCourse,SearchInCourse }
+
+
+export default { getschool, SaveSchool, deleteSchool, updateSchool,SearchAPI }

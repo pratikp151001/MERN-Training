@@ -16,6 +16,8 @@ model StudentList {
   name   String
   course Course? //[]
   staff  Staff?
+  school School[]
+ 
 }
 
 model Course {
@@ -37,3 +39,15 @@ model Staff {
   favStudentID String      @unique @db.ObjectId
   course       Course?
 }
+
+model School{
+id              String      @id @default(auto()) @map("_id") @db.ObjectId
+schoolNAme String
+address String
+studentIDs String[]  @db.ObjectId
+students StudentList @relation(fields: [studentIDs],references: [id])
+
+
+}
+
+

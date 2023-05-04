@@ -56,17 +56,14 @@ class studentrepository {
     }
 
     async search(wordToSearch: any) {
-        // console.log(wordToSearch.search)
-        // console.log("called get repo")
+        console.log(wordToSearch.search)
+        console.log("called search student repo")
         let pagetoskip = wordToSearch.page - 1
-
-        //{orderBy:[{name:'desc'}]}
-        // return await prisma.studentList.findMany({where:{AND:[{marks:{gte:90}},{age:{lt:50}}],NOT:{email:"Pratik7@gmail.com"}}})
-        // return await prisma.studentList.findRaw({filter:{$text:{$search:wordToSearch}}})  
-
-        return await prisma.studentList.findMany({ where: { OR: [{ email: { contains: wordToSearch.Search } }, { name: { contains: wordToSearch.Search } }] }, skip: 2 * pagetoskip, take: 3 })
-
-
+        console.log(pagetoskip)
+        //return await prisma.studentList.findMany({orderBy:[{name:'desc'}]})
+        // return await prisma.studentList.findMany({where:{AND:[{marks:{gte:90}},{age:{lt:50}}],NOT:{email:"Pratik7@gmail.com"}}}) 
+        
+        return await prisma.studentList.findMany({where:{OR:[{email:{contains:wordToSearch.search}},{name:{contains:wordToSearch.search}}]},skip:2*pagetoskip,take:2})
     }
 }
 

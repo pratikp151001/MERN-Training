@@ -9,7 +9,7 @@ class staffrepository{
         console.log("called  staff get repo")
 
         // {include:{FavStudent:true}}
-        return await prisma.staff.findMany();
+        return await prisma.staff.findMany({include:{FavStudent:true}});
         
     }
 

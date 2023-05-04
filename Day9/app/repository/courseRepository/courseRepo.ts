@@ -9,7 +9,7 @@ class CourseRepo {
         console.log("called  course get repo")
 
 
-        return await prisma.course.findMany({ include: { CourseTeacher: true } })
+        return await prisma.course.findMany()
 
     }
 
@@ -41,6 +41,26 @@ class CourseRepo {
             }
         })
         return resposeCourse
+    }
+
+    async search(wordtoSearch:any) {
+        console.log("called  search repo")
+
+        console.log(wordtoSearch)
+        // { include: {EnrolledStudent:{select:{marks:true,name:true}}}}
+       // return await prisma.course.findMany({where:{courseCode:{contains:"CP"}},include:{CourseTeacher:{include:{FavStudent:true}}}})
+      //  return await prisma.course.findMany({orderBy:{courseCode:wordtoSearch.sortBy}})
+      return await prisma.course.findMany({
+        orderBy:{courseCode:'desc'
+        },
+       include:{
+        EnrolledStudent:{
+            select:{
+                email:true
+            }
+        }
+       }
+      })
     }
 
 
