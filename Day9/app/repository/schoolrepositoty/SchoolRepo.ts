@@ -19,6 +19,7 @@ class SchooleRepo {
             data: {
                 schoolNAme: SchoolModel.schoolNAme,
                 address: SchoolModel.address,
+                studentId:SchoolModel.studentId,
                 studentIDs: SchoolModel.studentsIds
 
             }
@@ -48,20 +49,15 @@ class SchooleRepo {
 
         console.log(sortBy)
        
-        return await prisma.school.findMany({
-         orderBy:
-         {
-            schoolNAme:sortBy
-        }
-        // ,
-        // select:{
-        //     students:{
-        //         select:{
-        //             name:true,
-        //             marks:true,
-        //         }
-        //     }
-        // }
+        return await prisma.studentList.findMany({
+            include:{
+                school:{
+                    select:{
+                        id:true,
+                        schoolNAme:true
+                    }
+                }
+            }
         })
     }
 

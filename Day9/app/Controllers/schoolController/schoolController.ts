@@ -38,8 +38,8 @@ const SaveSchool = async (req: Request, res: Response) => {
         const SchoolToAdd: SchoolModel = {
             address: req.body.address,
             schoolNAme: req.body.schoolNAme,
+            studentId:req.body.studentId,
             studentsIds: req.body.studentsIds
-
         }
 
         console.log(SchoolToAdd)
@@ -104,6 +104,7 @@ const updateSchool = async (req: Request, res: Response) => {
         const SchoolToAdd: SchoolModel = {
             address: req.body.address,
             schoolNAme: req.body.schoolNAme,
+            studentId:req.body.studentId,
             studentsIds: req.body.studentsIds
 
         }

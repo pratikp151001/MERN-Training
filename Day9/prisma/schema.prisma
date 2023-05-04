@@ -44,8 +44,9 @@ model School{
 id              String      @id @default(auto()) @map("_id") @db.ObjectId
 schoolNAme String
 address String
+studentId  String    @db.String
 studentIDs String[]  @db.ObjectId
-students StudentList @relation(fields: [studentIDs],references: [id])
+students StudentList @relation(fields: [studentId],references: [id])
 
 
 }
