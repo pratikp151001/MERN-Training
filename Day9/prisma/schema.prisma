@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -8,9 +9,31 @@ datasource db {
 }
 
 model StudentList {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  age   Int
-  email String @unique
-  name  String
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  age    Int
+  email  String  @unique
   marks  Int
+  name   String
+  course Course? //[]
+  staff  Staff?
+}
+
+model Course {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  courseCode      String
+  EnrolledStudent StudentList @relation(fields: [studentId], references: [id])
+  studentId       String      @unique @db.ObjectId
+  isCompulsary    Boolean
+  CourseTeacher   Staff       @relation(fields: [teacherId], references: [id])
+  teacherId       String      @unique @db.ObjectId
+}
+
+model Staff {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  salary       Int
+  email        String      @unique
+  FavStudent   StudentList @relation(fields: [favStudentID], references: [id])
+  favStudentID String      @unique @db.ObjectId
+  course       Course?
 }

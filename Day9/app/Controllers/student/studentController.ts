@@ -7,9 +7,9 @@ import { responseModel } from "../../Interface/ResponseInterface";
 const getstudent = async (req: Request, res: Response) => {
 
     try {
-       
+
         let students = await StudentRepositary.StudentRepositary.getstudent()
-       // console.log("get studebt called", students)
+        // console.log("get studebt called", students)
         let response: responseModel = {
             status: 200,
             data: students,
@@ -17,7 +17,7 @@ const getstudent = async (req: Request, res: Response) => {
             message: "Students Get successfully",
         }
         // console.log(response.data)
-       
+
 
         res.json(response)
 
@@ -39,42 +39,41 @@ const savestudent = async (req: Request, res: Response) => {
 
 
     try {
-       
+
         const studentToAdd: studentmodel = {
             name: req.body.name,
             email: req.body.email,
             age: req.body.age,
             marks: req.body.marks
         }
-        // if (StudentRepositary.StudentRepositary.checkEmail(studentToAdd.email)!=null){
-        //      console.log(StudentRepositary.StudentRepositary.checkEmail(studentToAdd.email))
-            // console.log("Dc")
-        const student = await StudentRepositary.StudentRepositary.AddStudentTODB(studentToAdd)
-        console.log(student)
-        let response: responseModel = {
-            status: 200,
-            data: studentToAdd,
-            error: null,
-            message: "Students Added successfully",
+        var EmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (studentToAdd.email.match(EmailRegex)) {
+
+
+            const student = await StudentRepositary.StudentRepositary.AddStudentTODB(studentToAdd)
+            console.log(student)
+            let response: responseModel = {
+                status: 200,
+                data: studentToAdd,
+                error: null,
+                message: "Students Added successfully",
+            }
+
+            res.send(response)
+        }
+        else {
+            throw "Email is not Valid"
+
         }
 
-        res.send(response)
-    // }else{
-    //     let response: responseModel = {
-    //         status: 400,
-    //         data: null,
-    //         error: null,
-    //         message: "Students is already Present",
-    //     }
-    //     res.send(response)
 
-    // }
+
 
     } catch (ex) {
         let response: responseModel = {
             status: 400,
             data: null,
-            error: ex ,
+            error: ex as string,
             message: "Fail to Add student",
         }
 
@@ -116,16 +115,16 @@ const updatestudent = async (req: Request, res: Response) => {
     try {
         var idtoupdate = req.params.id
         console.log(idtoupdate)
-        
+
         const studentToUpdate: studentmodel = {
             name: req.body.name,
             email: req.body.email,
             age: req.body.age,
             marks: req.body.marks
         }
-       
+
         // const student = await StudentRepositary.StudentRepositary.DeleteStudent(idtodelete)
-        const student = StudentRepositary.StudentRepositary.UpdateStudent(studentToUpdate,idtoupdate)
+        const student = StudentRepositary.StudentRepositary.UpdateStudent(studentToUpdate, idtoupdate)
         let response: responseModel = {
             status: 200,
             data: studentToUpdate,
@@ -133,7 +132,7 @@ const updatestudent = async (req: Request, res: Response) => {
             message: "Students Updated successfully",
         }
 
-       
+
         res.send(response)
     } catch (error) {
         let response: responseModel = {
@@ -148,4 +147,38 @@ const updatestudent = async (req: Request, res: Response) => {
     }
 }
 
-export default { getstudent, savestudent, deletestudent ,updatestudent}
+
+
+const searchResult = async (req: Request, res: Response) => {
+
+    try {
+        var wordToSearch = req.query
+        console.log(wordToSearch)
+        let students = await StudentRepositary.StudentRepositary.search(wordToSearch)
+        // console.log("get studebt called", students)
+        let response: responseModel = {
+            status: 200,
+            data: students,
+            error: null,
+            message: "Students Get successfully",
+        }
+        // console.log(response.data)
+
+
+        res.json(response)
+
+    } catch (error) {
+        console.log(error);
+        let response: responseModel = {
+            status: 400,
+            data: null,
+            error: error as string,
+            message: "Fail to get Students",
+        }
+
+        res.send(response)
+
+    }
+}
+
+export default { getstudent, savestudent, deletestudent, updatestudent, searchResult }
