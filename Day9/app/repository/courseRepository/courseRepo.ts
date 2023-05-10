@@ -50,17 +50,21 @@ class CourseRepo {
         // { include: {EnrolledStudent:{select:{marks:true,name:true}}}}
        // return await prisma.course.findMany({where:{courseCode:{contains:"CP"}},include:{CourseTeacher:{include:{FavStudent:true}}}})
       //  return await prisma.course.findMany({orderBy:{courseCode:wordtoSearch.sortBy}})
-      return await prisma.course.findMany({
-        orderBy:{courseCode:'desc'
-        },
-       include:{
-        EnrolledStudent:{
-            select:{
-                email:true
-            }
-        }
-       }
-      })
+    //   return await prisma.course.findMany({
+    //     orderBy:{courseCode:'desc'
+    //     },
+    //    include:{
+    //     EnrolledStudent:{
+    //         select:{
+    //             email:true
+    //         }
+    //     }
+    //    }
+    //   })
+
+    return await prisma.course.findMany({
+        orderBy:{courseCode:wordtoSearch.sortBy}
+    })
     }
 
 

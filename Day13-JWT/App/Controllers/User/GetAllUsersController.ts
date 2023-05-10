@@ -1,0 +1,49 @@
+import { UserLoginModel } from "../../Models/User/UserLoginModel";
+import userrepository from "../../Repository/index"
+import { responseModel } from "../../Models/ResponseModel";
+import { NextFunction, Request, Response } from "express";
+import jwtDecode from 'jwt-decode';
+
+
+
+
+
+const GetAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    console.log("GetAllUser Called")
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    //console.log(token)
+    var decoded = jwtDecode(token as string);
+
+    let id = (decoded as any).user_id;
+
+    try {
+
+        let users = await userrepository.userrepository.GetAllUsers(id)
+        //  console.log(users)
+        let response: responseModel = {
+            status: 400,
+            data: users,
+            error: null,
+            message: "Get User Data",
+
+        }
+        res.send(response)
+
+
+    } catch (error) {
+        console.log(error);
+        let response: responseModel = {
+            status: 400,
+            data: null,
+            error: error as string,
+            message: "Fail to Get  User",
+
+        }
+
+        res.send(response)
+
+    }
+}
+
+export default { GetAllUsers }
