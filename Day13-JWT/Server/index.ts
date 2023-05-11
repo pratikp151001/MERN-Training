@@ -6,27 +6,27 @@ import dotenv from 'dotenv'
 
 
 class Server {
-    PORT:any;
-    app:any;
-    constructor(){
-        dotenv.config({path:".env"});
-        this.PORT=process.env.PORT;
-        this.app=express()
+    PORT: any;
+    app: any;
+    constructor() {
+        dotenv.config({ path: ".env" });
+        this.PORT = process.env.PORT;
+        this.app = express()
     }
-    start(){
+    start() {
         this.config()
         this.setupRoutes()
         this.listen()
     }
-    config(){
-      
+    config() {
+
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
     }
-    setupRoutes(){
+    setupRoutes() {
         this.app.use(routes)
     }
-    listen(){
+    listen() {
         this.app.listen(this.PORT, () => {
             console.log(`App is running on port ${this.PORT}`);
         })

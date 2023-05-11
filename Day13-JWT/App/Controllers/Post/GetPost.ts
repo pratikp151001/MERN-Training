@@ -3,20 +3,17 @@ import { NextFunction, Request, Response } from "express";
 import jwtDecode from 'jwt-decode';
 import PostRepo from "../../Repository/index";
 
-
-
-
-
-
-
 const GetPost = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("GetPost Called")
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    //console.log(token)
-    var decoded = jwtDecode(token as string);
 
-    let id = (decoded as any).user_id;
+    console.log((req as any).data)
+    console.log("GetPost Called")
+    // const authHeader = req.headers['authorization']
+    // const token = authHeader && authHeader.split(' ')[1]
+    // //console.log(token)
+    // var decoded = jwtDecode(token as string);
+
+    // let id = (decoded as any).user_id;
+    let id=(req as any).data
 
     try {
 

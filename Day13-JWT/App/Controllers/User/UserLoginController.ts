@@ -12,35 +12,35 @@ const LoginUser = async (req: Request, res: Response) => {
     console.log("Login User Called")
 
     try {
-        dotenv.config({path:".env"});
+        dotenv.config({ path: ".env" });
 
         const user: UserLoginModel = {
             email: req.body.email,
             password: req.body.password
         }
-        let users=await userrepository.userrepository.emailCheck(user.email)
+        let users = await userrepository.userrepository.emailCheck(user.email)
 
-      //  let users = await userrepository.userrepository.registerUser(user)
+        //  let users = await userrepository.userrepository.registerUser(user)
         // console.log("get studebt called", students)
 
-        if(users && (await bcrypt.compare(user.password, users.password))){
-        
-        // console.log(response.data)
-        const key=process.env.TOKEN_KEY;
-        const token = jwt.sign(
-            {user_id:users.id, user_email: user.email, user_password:user.password },key as string,{expiresIn:360});
+        if (users && (await bcrypt.compare(user.password, users.password))) {
+
+            // console.log(response.data)
+            const key = process.env.TOKEN_KEY;
+            const token = jwt.sign(
+                { user_id: users.id, user_email: user.email, user_password: user.password }, key as string, { expiresIn: 3600 });
 
             let response: responseModel = {
                 status: 200,
-                data: {user:users,token:token},
+                data: { user: users, token: token },
                 error: null,
-              
+
                 message: "User Login  successfully",
             }
 
-        res.json(response)
+            res.json(response)
         }
-        else{
+        else {
             throw "Please Enter Valid email and Password"
         }
 

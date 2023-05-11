@@ -4,18 +4,15 @@ import { responseModel } from "../../Models/ResponseModel";
 import { NextFunction, Request, Response } from "express";
 import jwtDecode from 'jwt-decode';
 
-
-
-
-
 const GetAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     console.log("GetAllUser Called")
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    //console.log(token)
-    var decoded = jwtDecode(token as string);
+    // const authHeader = req.headers['authorization']
+    // const token = authHeader && authHeader.split(' ')[1]
+    // //console.log(token)
+    // var decoded = jwtDecode(token as string);
 
-    let id = (decoded as any).user_id;
+    // let id = (decoded as any).user_id;
+    let id = (req as any).data
 
     try {
 

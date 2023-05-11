@@ -4,7 +4,7 @@ import PostRoutes from '../Routes/Post/PostRoutes'
 
 import express from 'express'
 
-const router=express.Router()
+const router = express.Router()
 router.use(userRegisterRoutes)
 router.use(PostRoutes)
 

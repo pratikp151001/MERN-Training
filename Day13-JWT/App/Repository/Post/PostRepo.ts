@@ -10,20 +10,20 @@ class Postrepository {
 
         let resposePost = await prisma.post.create({
             data: {
-               type:Post.type,
-               userId:Post.userId
+                type: Post.type,
+                userId: Post.userId
             }
         })
         return resposePost
     }
-    async getPosts(id :string) {
+    async getPosts(id: string) {
         console.log("get Posts Repo called")
 
-        let resposePosts= await prisma.post.findMany(
+        let resposePosts = await prisma.post.findMany(
             {
                 where:
                 {
-                    userId:id
+                    userId: id
                 }
             }
         )

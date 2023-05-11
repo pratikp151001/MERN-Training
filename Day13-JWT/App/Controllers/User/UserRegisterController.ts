@@ -12,7 +12,7 @@ const RegisterUser = async (req: Request, res: Response) => {
     console.log("Register User Called")
 
     try {
-        dotenv.config({path:".env"});
+        dotenv.config({ path: ".env" });
 
         const user: UserModel = {
             first_name: req.body.first_name,
@@ -21,31 +21,31 @@ const RegisterUser = async (req: Request, res: Response) => {
             email: req.body.email,
             password: req.body.password
         }
-       
 
-        
-       let  encryptedPassword = await bcrypt.hash(user.password, 10);
-       user.password=encryptedPassword;
+
+
+        let encryptedPassword = await bcrypt.hash(user.password, 10);
+        user.password = encryptedPassword;
 
         let users = await userrepository.userrepository.registerUser(user)
         // console.log("get studebt called", students)
 
-        
-        // console.log(response.data)
-        const key=process.env.TOKEN_KEY;
-        const token = jwt.sign(
-            {user_id:users.id,user_email: user.email, user_password:user.password },key as string,{expiresIn:60});
 
-            let response: responseModel = {
-                status: 200,
-                data: {user:users,token:token},
-                error: null,
-                
-                message: "User Register  successfully",
-            }
+        // console.log(response.data)
+        const key = process.env.TOKEN_KEY;
+        const token = jwt.sign(
+            { user_id: users.id, user_email: user.email, user_password: user.password }, key as string, { expiresIn:3600 });
+
+        let response: responseModel = {
+            status: 200,
+            data: { user: users, token: token },
+            error: null,
+
+            message: "User Register  successfully",
+        }
 
         res.json(response)
-      
+
 
     } catch (error) {
         console.log(error);

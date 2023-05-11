@@ -6,7 +6,7 @@ import ValidateLoginUser from "../../MiddleWare/LoginUserValidation";
 const router = express.Router()
 
 router.post('/registerUser', ValidateRegiterUser, Controllers.RegisterUser.RegisterUser)
-router.post('/loginUser',ValidateLoginUser, Controllers.LoginUser.LoginUser)
-router.get('/getAllUser',verifyToken, Controllers.GetAllUsers.GetAllUsers)
+router.post('/loginUser', ValidateLoginUser, Controllers.LoginUser.LoginUser)
+router.get('/getAllUser', verifyToken, Controllers.GetAllUsers.GetAllUsers)
 
 export default router

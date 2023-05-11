@@ -10,28 +10,28 @@ class userrepository {
 
         let resposeUser = await prisma.user.create({
             data: {
-                first_name:User.first_name,
-                last_name : User.last_name,
-                age        :User.age,
-                email      :User.email,
-                password   :User.password
-               
+                first_name: User.first_name,
+                last_name: User.last_name,
+                age: User.age,
+                email: User.email,
+                password: User.password
+
 
             }
         })
         return resposeUser
     }
-    async emailCheck(email:string) {
+    async emailCheck(email: string) {
         console.log("email check called")
 
-        let resposeUser= await prisma.user.findFirst({where:{email:email}})
+        let resposeUser = await prisma.user.findFirst({ where: { email: email } })
         console.log(resposeUser)
         return resposeUser
     }
-    async GetAllUsers(id:string) {
+    async GetAllUsers(id: string) {
         console.log("called  getallusers")
 
-        let resposeUser= await prisma.user.findMany({where:{id:id}})
+        let resposeUser = await prisma.user.findMany({ where: { id: id } })
         return resposeUser
     }
 }
