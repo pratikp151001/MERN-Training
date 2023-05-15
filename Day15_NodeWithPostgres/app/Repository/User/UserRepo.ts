@@ -35,5 +35,24 @@ class userrepository {
         let resposeUser = await prisma.user.findMany({ where: { id: id } })
         return resposeUser
     }
+    async DeleteUser(id: number) {
+        console.log("called  getActiveusers")
+
+        let resposeUser = await prisma.user.delete({ where: { id: id } })
+        return resposeUser
+    }
+
+    async UpdateUser(id: number,User: UserModel) {
+        console.log("called  UpdateUSer")
+
+        let resposeUser = await prisma.user.update({ where: { id: id },
+        data:{
+            name: User.name,
+            age: User.age,
+            email: User.email,
+            password: User.password
+        } })
+        return resposeUser
+    }
 }
 export default new userrepository();

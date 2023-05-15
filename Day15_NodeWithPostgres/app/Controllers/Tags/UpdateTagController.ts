@@ -5,11 +5,12 @@ import { responseModel } from "../../Models/responseModel";
 import { AddPostModel } from "../../Models/Post/PostModel";
 
 
-const AddTags = async (req: Request, res: Response) => {
-    console.log("Add Post Called")
+const UpdateTags = async (req: Request, res: Response) => {
+    console.log("Update Tags Called")
 
     try {
         let id = (req as any).data
+        let idtoUpdate=req.params.id
         const tag: AddTagsModel = {
             // type: req.body.PostType,
             // userId: id,
@@ -22,13 +23,13 @@ const AddTags = async (req: Request, res: Response) => {
         }
         console.log("DSFSDfDSDSFDSFDSFDFSFFFFFFFFFFFFFFFFFf", id)
 
-        let tags = await TagsRepo.Tagsrepository.addTags(tag,post)
+        let tags = await TagsRepo.Tagsrepository.UpdateTags(tag,post,parseInt(idtoUpdate))
         let response: responseModel = {
             status: 200,
             data: { Post: tags },
             error: null,
 
-            message: "Post Added successfully",
+            message: "Tags Update successfully",
         }
 
         res.json(response)
@@ -40,7 +41,7 @@ const AddTags = async (req: Request, res: Response) => {
             status: 400,
             data: null,
             error: error as string,
-            message: "Fail to Add Post",
+            message: "Fail to Update Tags",
 
         }
 
@@ -49,4 +50,4 @@ const AddTags = async (req: Request, res: Response) => {
     }
 }
 
-export default { AddTags }
+export default { UpdateTags }
