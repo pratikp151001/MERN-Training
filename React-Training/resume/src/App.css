@@ -1,0 +1,32 @@
+.bg-light{
+  background-color: rgb(237, 237, 237) !important;
+}
+.Picture{
+  /* border-radius: 50%; */
+  width: 70%;
+  height:120%;
+}
+.App{
+  background-color: rgb(252, 249, 246);
+}
+.row{
+  height:400px;
+}
+
+.name{
+  font-size: 200%;
+  font-weight: bold;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.degisnation{
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+color: gray;
+font-size: 150%;
+}
+.info{
+  width: 70%;
+}
+.buttons{
+  border-radius: 10px;
+  border: 1px gray solid;
+}
