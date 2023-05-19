@@ -1,0 +1,16 @@
+p{
+  margin-top: 1px;
+}
+.card-body{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color:rgb(200, 218, 244);
+}
+.App{
+  background-color: rgb(247, 244, 239);
+}
+img{
+  width: 300px;
+}
+button:hover{
+  cursor:pointer;
+}
