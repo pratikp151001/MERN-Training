@@ -1,0 +1,26 @@
+.card,button{
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;}
+.card-body{
+  background-color: #97DEFF
+}
+.navbar{
+  background-color: #AA77FF !important;
+  color: white !important;
+}
+.App{
+  background-image:  linear-gradient(to bottom right,#62CDFF, #AA77FF);
+}
+/* #navbarTogglerDemo02{
+  margin-left: 30%;
+} */
+a{
+  text-decoration: none !important;
+  color: white;
+  font-weight: bold;
+  margin-left: 5%;
+}
+img{
+  width: 300px;
+}
+.fetchAllbtn{
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;}

@@ -1,0 +1,18 @@
+.divcontainer{
+  margin: 2% !important;
+}
+.textfield{
+  width: 100%;
+}
+.mainbody{
+  border: 1px solid black;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+ 
+  border-radius: 6px;
+}
+.App{
+  padding-top: 2%;
+}
+h1{
+  text-align: center;
+}

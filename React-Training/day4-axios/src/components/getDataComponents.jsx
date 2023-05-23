@@ -8,7 +8,7 @@ import '../App.css'
 export default function GetDataComponents() {
     const [apiData, setapiData] = useState([])
     const [apiimage, setapiimage] = useState([])
-    const [fetchimagebtnclick, setfetchimagebtnclick] = useState(false)
+    const [fetchimagebtnclick, setfetchimagebtnclick] = useState([])
     const [fetchAllimagebtnclick, setfetchAllimagebtnclick] = useState(false)
 
     const fetchImages = async () => {
@@ -44,7 +44,7 @@ export default function GetDataComponents() {
     const FetchsigleImage = async (e) => {
         console.log("single Fetch called")
         try {
-            setfetchimagebtnclick(e.target.id)
+            setfetchimagebtnclick(oldArray=>[...oldArray, parseInt(e.target.id)])
             let resApiImage = await axios.get("https://jsonplaceholder.typicode.com/photos")
 
             setapiimage(resApiImage.data)
@@ -88,9 +88,9 @@ export default function GetDataComponents() {
         console.log("WWWWWWWWWWWWWww", typeof (fetchimagebtnclick), fetchimagebtnclick)
         console.log("WWWWQQQQQQQQQ", typeof (index), index)
         
-        let imgID = parseInt(fetchimagebtnclick)
+        // let imgID = parseInt(fetchimagebtnclick)
 
-        if (apiimage.length > 1 && imgID == index) {
+        if (apiimage.length > 1 && fetchimagebtnclick.includes(index)) {
  
             return <img src={apiimage[index].url}></img>
 

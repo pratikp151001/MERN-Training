@@ -1,0 +1,30 @@
+.textfield{
+  width: 100%!important;
+  padding-bottom: 3% !important;
+}
+/* .divcontainer{
+  margin-left: 2% !important;
+  margin-right: 2% !important;
+} */
+.MuiStack-root{
+  padding-top: 0px !important;
+}
+.reg-form{
+  margin:  0% 7%;
+  padding: 0%;
+  border: 1px solid black;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: white;
+}
+.App{
+  background-color: #61dafb;
+  padding: 2% 0%;
+  height: 92vh;
+}
+.submitbtn{
+  text-align: center !important;
+}
+.row{
+  background-color: rgb(159, 158, 158);
+}

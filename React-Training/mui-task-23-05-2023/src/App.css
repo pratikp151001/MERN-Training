@@ -1,0 +1,37 @@
+.App{
+  padding-top: 3%;
+  text-align: center;
+  background: rgb(2,0,36);
+  /* background: radial-gradient(circle, rgb(192, 148, 60) 0%, rgb(206, 216, 70) 30%, rgb(212, 216, 176) 100%); */
+  min-height: 100vh;
+  background: linear-gradient(30deg, #01025c, #2e0182, #7701a9, #cf01c2, #f6018e, #fe1f4f, #ff5f45, #ffb56b);
+}
+.maindiv{
+  background-color: rgb(224, 223, 223);
+  border: 1px solid black;
+  border-radius: 6px;
+  /* margin-bottom: 5%; */
+}
+.field{
+  width: 80%;
+  margin-top: 5% !important;
+  background-color: rgb(254, 254, 254);
+  opacity: 100;
+  border-radius: 6px;
+} 
+
+/* .addFieldsPart{
+  background-image: linear-gradient(
+  45deg,
+  hsl(240deg 100% 20%) 0%,
+  hsl(289deg 100% 21%) 6%,
+  hsl(315deg 100% 27%) 15%,
+  hsl(329deg 100% 36%) 30%,
+  hsl(337deg 100% 43%) 51%,
+  hsl(357deg 91% 59%) 68%,
+  hsl(17deg 100% 59%) 79%,
+  hsl(34deg 100% 53%) 88%,
+  hsl(45deg 100% 50%) 94%,
+  hsl(55deg 100% 50%) 100%
+);
+} */
