@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  min-height: 100vh;
+}
+.display{
+  width: 5%;
+  height: 2.2rem;
+  padding-top: -1px;
+}
+.takeString{
+  width: 30% !important;
+}
+.btn{
+  margin: 0.5% !important;
+}
+a{
+  text-decoration: none !important;
+  color: rgb(15, 15, 15);
+  font-weight: bold;
+  margin-left: 5%;
+}
+li{
+  margin-left: 8%;
+}
+.navbar{
+  background-color: #008793;
+}

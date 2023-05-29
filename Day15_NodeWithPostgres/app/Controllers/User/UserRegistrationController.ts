@@ -43,7 +43,7 @@ const RegisterUser = async (req: Request, res: Response) => {
             message: "User Register  successfully",
         }
 
-        res.json(response)
+        res.json(response).status(400)
 
 
     } catch (error) {
@@ -56,7 +56,7 @@ const RegisterUser = async (req: Request, res: Response) => {
 
         }
 
-        res.send(response)
+        res.send(response).status(400)
 
     }
 }

@@ -6,6 +6,7 @@ import '../App.css'
 import { useState } from 'react';
 
 
+
 export default function AddToto() {
 
     const [task,setTask]=useState({})
@@ -19,6 +20,7 @@ export default function AddToto() {
     }
     return (
         <>
+        
             <div className="addTaskComponent mt-5 pb-5" align="center" >
                 <h2 className='mb-3' >Add Task</h2>
                 <div className="Container" >
