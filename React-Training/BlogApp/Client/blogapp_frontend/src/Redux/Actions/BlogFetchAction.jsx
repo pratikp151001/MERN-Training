@@ -1,16 +1,17 @@
 import axios from "axios";
 import { BlogActionTypes } from "../Actions_Type";
+import { BlogApi } from "../../Apis/ApiHandler/Controller";
 
 const BlogFetchAction=()=>{
     return async function(dispatch){
         dispatch({type:BlogActionTypes.FETCH_REQUEST})
-        const res= await axios.get("http://localhost:9999/fetchblog")
+        const res= await BlogApi.GetAllBlog()
         console.log("🚀 ~ file: BlogFetchAction.jsx:8 ~ returnfunction ~ res:", res)
 
-        if(res.status==200){
+        if(res.ResponseStatus==200){
             dispatch({
                 type:BlogActionTypes.FETCH_SUCCESS,
-                payload:res.data.data
+                payload:res.Result
             })
         }
         if(!res){

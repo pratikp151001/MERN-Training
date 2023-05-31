@@ -3,4 +3,11 @@ import FetchBlog from "./Blog/FetchBlog";
 import DeleteBlog from "./Blog/DeleteBlog";
 import FetchSingleBolg from "./Blog/FetchSingleBolg";
 import UpdateBlog from "./Blog/UpdateBlog";
-export default {AddBlog,FetchBlog,DeleteBlog,FetchSingleBolg,UpdateBlog}
+
+import UserRegistration from "./User/UserRegistration";
+import UserLogin from "./User/UserLogin";
+import FetchAllUsers from "./User/GetAllUser" 
+import FetchUserById from "./User/GetUserbyId"
+import DeleteUser from "./User/DeleteUser"
+import UpdateUser from "./User/UpdateUser"
+export default {AddBlog,FetchBlog,DeleteBlog,FetchSingleBolg,UpdateBlog,UserRegistration,UserLogin,FetchAllUsers,FetchUserById,DeleteUser,UpdateUser}

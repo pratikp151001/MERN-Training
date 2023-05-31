@@ -18,66 +18,70 @@ import FetchSingleBlogDataAction from '../Redux/Actions/FetchSingleBlogData';
 import { useNavigate } from 'react-router-dom';
 
 export default function Blogs() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
-  
+
   const dispatch = useDispatch()
-  const stateDelete=useSelector((state) => state.deleteblogs)
+  const stateDelete = useSelector((state) => state.deleteblogs)
+  console.log("🚀 ~ file: Blogs.jsx:29 ~ Blogs ~ stateDelete:", stateDelete)
   useEffect(() => {
     dispatch(BlogFetchAction())
   }, [stateDelete.data])
   const state = useSelector((state) => state.blogs)
-  
+  console.log("🚀 ~ file: Blogs.jsx:30 ~ Blogs ~ state:", state)
+
 
   // const handleViewClcick=(id)=>{
   //   alert("DS")
-   
+
   //   window.open("blogdata", "_blank", "noreferrer");
   // }
 
- 
+
   return (
-    
+
     <div className="App">
-      {state?.isLoading ? (<Loader></Loader>):
-      <div className='container mt-3'>
-        <h2 className='mb-3'>Blogs</h2>
-        <div className='row justify-content-center'>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Id</TableCell>
-                  <TableCell align="center">Description</TableCell>
-                  <TableCell align="center">Title</TableCell>
-                  <TableCell align="center">Category</TableCell>
-                  <TableCell align="center">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {state?.data?.map((row,index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                   
-                    <TableCell align="center">{row.id}</TableCell>
-                    <TableCell align="center">{row.description}</TableCell>
-                    <TableCell align="center">{row.title}</TableCell>
-                    <TableCell align="center">{row.category}</TableCell>
-                    <TableCell align="center"><button variant="contained" className='ms-3' onClick={()=>{dispatch(BlogDelteAction(row.id))}}><DeleteForeverIcon/></button> <button variant="contained" className='ms-3' onClick={()=>{dispatch(FetchSingleBlogDataAction(row.id));navigate(`/blogdata/${row.id}`)}}><VisibilityIcon/></button><button variant="contained" className='ms-3' onClick={()=>{dispatch(FetchSingleBlogDataAction(row.id));navigate(`/updateblog/${row.id}`)}}><EditIcon/></button></TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+      <div className="mainDiv">
+        {state?.isLoading ? (<Loader></Loader>) :
+          <div className='container pt-3'>
+            <h2 className='mb-3'>Blogs</h2>
+            <div className='row justify-content-center'>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Id</TableCell>
+                      <TableCell align="center">Description</TableCell>
+                      <TableCell align="center">Title</TableCell>
+                      <TableCell align="center">Category</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {state?.data.data?.map((row, index) => (
+                      <TableRow
+                        key={index}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+
+                        <TableCell align="center">{row.id}</TableCell>
+                        <TableCell align="center">{row.description}</TableCell>
+                        <TableCell align="center">{row.title}</TableCell>
+                        <TableCell align="center">{row.category}</TableCell>
+                        <TableCell align="center"><button variant="contained" className='ms-3' onClick={() => { dispatch(BlogDelteAction(row.id)) }}><DeleteForeverIcon /></button> <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/blogdata/${row.id}`) }}><VisibilityIcon /></button><button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/updateblog/${row.id}`) }}><EditIcon /></button></TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
 
 
 
-        </div>
+            </div>
 
+          </div>
+        }
       </div>
-}
     </div>
   )
 }

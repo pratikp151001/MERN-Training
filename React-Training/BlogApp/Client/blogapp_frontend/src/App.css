@@ -26,12 +26,17 @@ a.active{
   border-radius: 6px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
   background-color: white;
+ 
   
 }
 .mainDiv{
-  background: #B2FEFA;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #0ED2F7, #B2FEFA);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #0ED2F7, #B2FEFA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: #B2FEFA;  fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #0ED2F7, #B2FEFA);  */
+  /* background: linear-gradient(to right, #0ED2F7, #B2FEFA);  */
+  background: #6190E8;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #A7BFE8, #77a1ee);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #A7BFE8, #84a9ed); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   
 min-height: 93vh;
 
@@ -125,7 +130,7 @@ min-height: 93vh;
 
 /* BUTTON */
 button {
-  padding: 17px 40px;
+  padding: 10px 25px;
   border-radius: 50px;
   border: 0;
   background-color: rgb(50, 179, 205);
@@ -151,3 +156,15 @@ button {
   transform: translateY(10px);
   transition: 100ms;
  }
+
+
+/* LOGOUT */
+.logout{
+  background: none !important;
+  text-decoration: none !important;
+  color: white;
+  padding: 5px 15px;
+}
+.logout:hover{
+  background: none !important;
+}

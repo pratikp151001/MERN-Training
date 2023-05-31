@@ -1,3 +1,4 @@
+import { BlogApi } from "../../Apis/ApiHandler/Controller";
 import { BlogActionTypes } from "../Actions_Type";
 import axios from 'axios'
 
@@ -8,7 +9,7 @@ const BlogActions=(BlogData) => {
         dispatch({type:BlogActionTypes.ADD_REQUEST})
         
         console.log("🚀 ~ file: BlogActions.jsx:10 ~ BlogActions ~ BlogData:", BlogData)
-        const res=await axios.post("http://localhost:9999/addblog",BlogData)
+        const res=await BlogApi.InsertBlog(BlogData)
         console.log("🚀 ~ file: BlogActions.jsx:7 ~ res:", res)
         if(res){
             dispatch({
