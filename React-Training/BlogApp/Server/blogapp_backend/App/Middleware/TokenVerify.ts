@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import Jwt from "jsonwebtoken";
 import dotenv from 'dotenv'
 import { responseModel } from "../Model/ResponseModel";
+import UserRepository from '../Repository/index'
 
 dotenv.config({ path: ".env" });
 
-function VerifyToken(req: any, res: Response, next: NextFunction) {
+async function VerifyToken(req: any, res: Response, next: NextFunction) {
     console.log("🚀 ~ file: TokenVerify.ts:9 ~ VerifyToken ~ VerifyToken:", "VerifyToken")
 
     const authHeader = req.headers['authorization']
@@ -14,7 +15,7 @@ function VerifyToken(req: any, res: Response, next: NextFunction) {
     let KEY = process.env.TOKEN_KEY
 
     if (token != null) {
-        Jwt.verify(token, KEY as string, (err: any, user: any) => {
+        Jwt.verify(token, KEY as string, async (err: any, user: any) => {
             console.log("🚀 ~ file: TokenVerify.ts:18 ~ Jwt.verify ~ user:", user)
 
             if (err) {
@@ -32,6 +33,11 @@ function VerifyToken(req: any, res: Response, next: NextFunction) {
             else{
 
                 req.data=user.user_id
+
+                const logedInUser=await UserRepository.UserRepository.GetUserDetailsForValidationCheck(user.user_id)
+
+                req.permissions=logedInUser?.role.permisson
+                console.log("🚀 ~ file: TokenVerify.ts:38 ~ Jwt.verify ~ logedInUser:", logedInUser)
                 next() 
                 console.log("🚀 ~ file: TokenVerify.ts:36 ~ Jwt.verify ~ user:", user.user_id)
 

@@ -6,4 +6,5 @@ export interface UserRegistrationModel {
     mobile:string,
     address:string,
     pincode:string,
+    roleId:string
 }

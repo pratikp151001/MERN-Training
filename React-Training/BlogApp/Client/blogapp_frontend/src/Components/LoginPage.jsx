@@ -19,9 +19,9 @@ export default function LoginPage() {
 
     console.log("🚀 ~ file: LoginPage.jsx:14 ~ LoginPage ~ state:", state)
 
-    // if (state?.login_data?.status == 200) {
-    //     navigate('/')
-    // }
+    if (state?.login_data?.status == 200 && localStorage.getItem('token')) {
+        navigate('/') 
+    }
     const [formvalue, setformvalue] = useState({})
 
     const getFieldsData = (e) => {

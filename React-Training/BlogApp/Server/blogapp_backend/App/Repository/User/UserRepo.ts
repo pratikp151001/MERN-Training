@@ -6,53 +6,74 @@ const prisma = new PrismaClient()
 
 class UserRepository {
     async RegisterUser(user: UserRegistrationModel) {
-        let User=await prisma.user.create({
-            data:{
-                name :user.name,
-                email :user.email,
-                password :user.password,
-                address :user.address,
-                mobile :user.mobile,
-                pincode :user.pincode
+        let User = await prisma.user.create({
+            data: {
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                address: user.address,
+                mobile: user.mobile,
+                pincode: user.pincode,
+                roleId: user.roleId
 
-                
             }
         })
         return User;
     }
-    async LoginUser(email :string) {
-        let User=await prisma.user.findMany({where:{email:email}})
+    async LoginUser(email: string) {
+        let User = await prisma.user.findMany(
+            {
+                where:
+                {
+                    email: email
+                },
+                include:{
+                    role:{
+                        include:{
+                            permisson:true
+                        }
+                    }
+                }
+            }
+        )
         return User;
     }
 
     async FetchAllUsers() {
-        let User=await prisma.user.findMany()
+        let User = await prisma.user.findMany()
         return User;
     }
-    async FetchUserById(id:string) {
-        let User=await prisma.user.findMany({where:{id:id}})
+    async FetchUserById(id: string) {
+        let User = await prisma.user.findMany({ where: { id: id } })
         return User;
     }
 
-    async DeleteUser(id:string) {
-        let User=await prisma.user.delete({where:{id:id}})
+    async DeleteUser(id: string) {
+        let User = await prisma.user.delete({ where: { id: id } })
         return User;
     }
-    async UpdateUser(id:string,user:UserRegistrationModel) {
-        let User=await prisma.user.update({where:{id:id},
-            data:{
-                name :user.name,
-                email :user.email,
-                password :user.password,
-                address :user.address,
-                mobile :user.mobile,
-                pincode :user.pincode
+    async UpdateUser(id: string, user: UserRegistrationModel) {
+        let User = await prisma.user.update({
+            where: { id: id },
+            data: {
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                address: user.address,
+                mobile: user.mobile,
+                pincode: user.pincode,
+                roleId: user.roleId
 
-                
+
             }
         })
         return User;
     }
+    async GetUserDetailsForValidationCheck(id: string) {
+        let User = await prisma.user.findFirst({ where: { id: id },
+        include:{role:{include:{permisson:true}}} })
+        return User;
+    }
 }
 
-export default  new  UserRepository()
+export default new UserRepository()

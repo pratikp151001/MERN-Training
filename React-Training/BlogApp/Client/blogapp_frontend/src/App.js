@@ -10,6 +10,7 @@ import LoginPage from "./Components/LoginPage";
 import Users from "./Components/Users";
 import ProtectedRoutes from "./Components/ProtectedRoutes";
 import Profile from "./Components/Profile";
+import Editroles from "./Components/Editroles";
 
 function App() {
   return (
@@ -24,12 +25,14 @@ function App() {
             <Route path="/updateblog/:id" element={<BlogAdd text="Update" />} />
             <Route path="/allusers" element={<Users />} />
             <Route path="/userprofile/:id" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/updateprofile/:id" element={<SignUpPage  text="Update Profile"/>} />
           </Route>
           <Route path="/signup" element={<SignUpPage  text="Sign Up"/>} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
+      {/* <Editroles/> */}
     </div>
   );
 }

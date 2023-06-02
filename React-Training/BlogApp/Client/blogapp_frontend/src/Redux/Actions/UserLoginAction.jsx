@@ -15,6 +15,7 @@ const UserLogIn=(userdetails) => {
 
         if(resp.Result.status==200){
             localStorage.setItem('token',JSON.stringify(resp.Result.data.token))
+            localStorage.setItem('logedInUserPermissions',JSON.stringify(resp.Result.data.data))
             dispatch({
                 type:UserActionsType.LOGIN_SUCCESS,
                 payload:resp.Result

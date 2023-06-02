@@ -25,5 +25,24 @@ model User {
   address String
   mobile String
   pincode String
+  role Role @relation(fields: [roleId],references: [id])
+  roleId String @db.ObjectId  
 
 }
+
+
+model Role {
+   id         String @id @default(auto()) @map("_id") @db.ObjectId
+ role_name String @unique
+ permisson Permission[]  @relation(fields: [permissionIds], references: [id])
+ permissionIds String[]  @db.ObjectId
+ user User[]
+
+ }
+
+ model Permission{
+    id         String @id @default(auto()) @map("_id") @db.ObjectId
+    permission_name String @unique
+    role Role[]   @relation(fields: [role_id], references: [id])
+    role_id  String[] @db.ObjectId
+ }

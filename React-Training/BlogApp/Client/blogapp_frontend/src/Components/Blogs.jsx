@@ -16,6 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import BlogDelteAction from '../Redux/Actions/BlogDeleteAction';
 import FetchSingleBlogDataAction from '../Redux/Actions/FetchSingleBlogData';
 import { useNavigate } from 'react-router-dom';
+import PERMISSIONS from '../Permissions/permission';
+import PermissionCheck from '../Permissions/PermissionCheck';
 
 export default function Blogs() {
   const navigate = useNavigate()
@@ -68,7 +70,11 @@ export default function Blogs() {
                         <TableCell align="center">{row.description}</TableCell>
                         <TableCell align="center">{row.title}</TableCell>
                         <TableCell align="center">{row.category}</TableCell>
-                        <TableCell align="center"><button variant="contained" className='ms-3' onClick={() => { dispatch(BlogDelteAction(row.id)) }}><DeleteForeverIcon /></button> <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/blogdata/${row.id}`) }}><VisibilityIcon /></button><button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/updateblog/${row.id}`) }}><EditIcon /></button></TableCell>
+                        <TableCell align="center">
+                        {PermissionCheck(PERMISSIONS.DELETE_POST_PERMISSION)?<button variant="contained" className='ms-3' onClick={() => { dispatch(BlogDelteAction(row.id)) }}><DeleteForeverIcon /></button>:``}
+                        {PermissionCheck(PERMISSIONS.VIEW_POST_PERMISSION)? <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/blogdata/${row.id}`) }}><VisibilityIcon /></button>:``}
+                        {PermissionCheck(PERMISSIONS.EDIT_POST_PERMISSION)? <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchSingleBlogDataAction(row.id)); navigate(`/updateblog/${row.id}`) }}><EditIcon /></button>:``}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

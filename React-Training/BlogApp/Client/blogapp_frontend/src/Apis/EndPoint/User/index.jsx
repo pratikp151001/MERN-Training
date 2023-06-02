@@ -4,7 +4,8 @@ export const UserEndPoints = {
     GETALL_USERS:"/getallusers",
     DELETE_USER:(id)=>`/deleteuser/${id}`,
     FETCH_PROFILE:(id)=>`/getuserbyid/${id}`,
-    UPDATE_PROFILE:(id)=>`/updateuser/${id}`
+    UPDATE_PROFILE:(id)=>`/updateuser/${id}`,
+    PROFILE:`/profile`
    
   };
   

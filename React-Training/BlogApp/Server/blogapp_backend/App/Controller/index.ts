@@ -10,4 +10,8 @@ import FetchAllUsers from "./User/GetAllUser"
 import FetchUserById from "./User/GetUserbyId"
 import DeleteUser from "./User/DeleteUser"
 import UpdateUser from "./User/UpdateUser"
-export default {AddBlog,FetchBlog,DeleteBlog,FetchSingleBolg,UpdateBlog,UserRegistration,UserLogin,FetchAllUsers,FetchUserById,DeleteUser,UpdateUser}
+import ViewOwnProfile from "./User/ViewOwnProfile";
+
+import GetPermissios from "./Admin/GetPermissios";
+export default {AddBlog,FetchBlog,DeleteBlog,FetchSingleBolg,UpdateBlog,UserRegistration,UserLogin,FetchAllUsers,FetchUserById,DeleteUser,UpdateUser,ViewOwnProfile,
+    GetPermissios}

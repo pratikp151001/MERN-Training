@@ -16,6 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteUser from '../Redux/Actions/UserDeleteAction';
 import FetchProfile from '../Redux/Actions/FetchSingleUserProfile';
 import { useNavigate } from 'react-router-dom';
+import PERMISSIONS from '../Permissions/permission';
+import PermissionCheck from '../Permissions/PermissionCheck';
 
 export default function Users() {
   const dispatch = useDispatch()
@@ -68,10 +70,15 @@ export default function Users() {
                         <TableCell align="center">{row.mobile}</TableCell>
                         <TableCell align="center">{row.address}</TableCell>
                         <TableCell align="center">{row.pincode}</TableCell>
-                        <TableCell align="center"><button variant="contained" className='ms-3' onClick={() => { dispatch(DeleteUser(row.id)) }}><DeleteForeverIcon /></button> <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchProfile(row.id)); nevigate(`/userprofile/${row.id}`) }}><VisibilityIcon /></button><button variant="contained" className='ms-3'
+                        <TableCell align="center">
+                          {/* {console.log(PermissionCheck("RESULT:>",PERMISSIONS.VIEW_POST_PERMISSION))} */}
+                         {PermissionCheck(PERMISSIONS.DELETE_USER_PERMISSION)? <button variant="contained" className='ms-3' onClick={() => { dispatch(DeleteUser(row.id)) }}><DeleteForeverIcon /></button>:`` }
+                         {PermissionCheck(PERMISSIONS.VIEW_USER_PERMISSION)? <button variant="contained" className='ms-3' onClick={() => { dispatch(FetchProfile(row.id)); nevigate(`/userprofile/${row.id}`) }}><VisibilityIcon /></button> :``}
+                         {PermissionCheck(PERMISSIONS.EDIT_USER_PERMISSION)?<button variant="contained" className='ms-3'
                           onClick={() => {nevigate(`/updateprofile/${row.id}`); dispatch(FetchProfile(row.id));}} 
                         // onClick={()=>{gotoUpdateUser(row.id)}}
-                         ><EditIcon /></button></TableCell>
+                         ><EditIcon /></button>:``} 
+                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

@@ -159,12 +159,12 @@ button {
 
 
 /* LOGOUT */
-.logout{
+.logout,.profile{
   background: none !important;
   text-decoration: none !important;
   color: white;
   padding: 5px 15px;
 }
-.logout:hover{
+.logout:hover,.profile:hover{
   background: none !important;
 }

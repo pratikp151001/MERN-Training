@@ -110,6 +110,24 @@ export const UserService = {
     } catch (error) {
       console.log('error from services::>', error);
     }
+  },
+  OwnProfile: async () => {
+   console.log("🚀 ~ file: index.jsx:115 ~ OwnProfile: ~ OwnProfile:", "OwnProfile")
+   
+    
+    const reqestObj = new requestModel();
+    try {
+      reqestObj.method = requestMethod.GET;
+      reqestObj.url = UserEndPoints.PROFILE
+      reqestObj.data = null;
+      reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
+
+      console.log("🚀 ~ file: index.jsx:125 ~ OwnProfile: ~ reqestObj:", reqestObj)
+
+      return await axiosRepository.request(reqestObj);
+    } catch (error) {
+      console.log('error from services::>', error);
+    }
   }
 }
 

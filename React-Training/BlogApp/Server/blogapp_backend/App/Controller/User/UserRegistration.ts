@@ -19,6 +19,7 @@ const RegisterUser = async (req: Request, res: Response) => {
             mobile:  req.body.mobile,
             address:  req.body.address,
             pincode:  req.body.pincode,
+            roleId: "64782b84f30954c54be63a2e"
         }
         console.log("🚀 ~ file: UserRegistration.ts:23 ~ RegisterUser ~ User:", User)
 

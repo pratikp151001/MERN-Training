@@ -5,7 +5,7 @@ import { UserService } from "../../Service/User";
 // import { BlogService } from "../../Service/Blog";
 
 export const UserController = {
-    RegisterUser,LoginUser,GetAllUsers,DeleteUser,FetchProfile,UpdateProfile
+    RegisterUser,LoginUser,GetAllUsers,DeleteUser,FetchProfile,UpdateProfile,OwnProfile
 };
 async function RegisterUser(obj) {
     console.log("🚀 ~ file: index.jsx:9 ~ RegisterUser ~ obj:", obj)
@@ -172,6 +172,32 @@ async function DeleteUser(id) {
                  responseOBJ.Result = response?.data ? response?.data : undefined;
                  responseOBJ.ResponseStatus = response.status;
                  console.log("🚀 ~ file: index.jsx:148 ~ FetchProfile ~ responseOBJ:", responseOBJ)
+ 
+             }
+        
+         return responseOBJ;
+ 
+     }
+     catch (error) {
+         console.log("🚀 ~ file: index.jsx:6 ~ InsertBlog ~ error:", error)
+ 
+     }
+ }
+ 
+ async function OwnProfile() {
+   
+     try {
+ 
+         let responseOBJ = new CommanResponse();
+ 
+             const response = await UserService.OwnProfile()
+ 
+             if (response) {
+                 responseOBJ.Status = response?.status === 200 ? true : false;
+                 responseOBJ.Result = response?.data ? response?.data : undefined;
+                 responseOBJ.ResponseStatus = response.status;
+                 console.log("🚀 ~ file: index.jsx:199 ~ OwnProfile ~ responseOBJ:", responseOBJ)
+                
  
              }
         
