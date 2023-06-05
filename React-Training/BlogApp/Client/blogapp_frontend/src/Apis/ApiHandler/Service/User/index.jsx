@@ -4,7 +4,7 @@ import { axiosRepository } from '../../Repository/axios';
 import { UserEndPoints } from '../../../EndPoint/User';
 export const UserService = {
   RegisterUser: async (body) => {
-    console.log("🚀 ~ file: index.jsx:7 ~ RegisterUser: ~ body:", body)
+    // console.log("🚀 ~ file: index.jsx:7 ~ RegisterUser: ~ body:", body)
 
 
     const reqestObj = new requestModel();
@@ -19,7 +19,7 @@ export const UserService = {
   },
 
   LoginUser: async (body) => {
-    console.log("🚀 ~ file: index.jsx:22 ~ LoginUser: ~ body:", body)
+    // console.log("🚀 ~ file: index.jsx:22 ~ LoginUser: ~ body:", body)
 
 
     const reqestObj = new requestModel();
@@ -35,7 +35,7 @@ export const UserService = {
 
 
   FetchAllUsers: async () => {
-    console.log("🚀 ~ file: index.jsx:22 ~ FetchAll: ~ body:", "body")
+    // console.log("🚀 ~ file: index.jsx:22 ~ FetchAll: ~ body:", "body")
 
 
     const reqestObj = new requestModel();
@@ -44,10 +44,10 @@ export const UserService = {
       reqestObj.url = UserEndPoints.GETALL_USERS
       reqestObj.data = null;
       reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
-      console.log("🚀 ~ file: index.jsx:47 ~ FetchAllUsers: ~ reqestObj:", reqestObj)
+      // console.log("🚀 ~ file: index.jsx:47 ~ FetchAllUsers: ~ reqestObj:", reqestObj)
 
 
-      console.log("🚀 ~ file: index.jsx:47 ~ FetchAllUsers: ~ localStorage.getItem('token'):", localStorage.getItem('token'))
+      // console.log("🚀 ~ file: index.jsx:47 ~ FetchAllUsers: ~ localStorage.getItem('token'):", localStorage.getItem('token'))
       return await axiosRepository.request(reqestObj);
     } catch (error) {
       console.log('error from services::>', error);
@@ -55,7 +55,7 @@ export const UserService = {
   },
 
   DeleteUser: async (id) => {
-    console.log("🚀 ~ file: index.jsx:58 ~ DeleteUser: ~ async:", "async")
+    // console.log("🚀 ~ file: index.jsx:58 ~ DeleteUser: ~ async:", "async")
     
 
 
@@ -66,7 +66,7 @@ export const UserService = {
       reqestObj.data = null;
       reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
 
-      console.log("🚀 ~ file: index.jsx:69 ~ DeleteUser: ~ reqestObj:", reqestObj)
+      // console.log("🚀 ~ file: index.jsx:69 ~ DeleteUser: ~ reqestObj:", reqestObj)
 
       return await axiosRepository.request(reqestObj);
     } catch (error) {
@@ -75,7 +75,7 @@ export const UserService = {
   },
 
   FetchProfile: async (id) => {
-    console.log("🚀 ~ file: index.jsx:78 ~ FetchProfile: ~ id:", id)
+    // console.log("🚀 ~ file: index.jsx:78 ~ FetchProfile: ~ id:", id)
     
 
 
@@ -86,7 +86,7 @@ export const UserService = {
       reqestObj.data = null;
       reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
 
-      console.log("🚀 ~ file: index.jsx:89 ~ FetchProfile: ~ reqestObj:", reqestObj)
+      // console.log("🚀 ~ file: index.jsx:89 ~ FetchProfile: ~ reqestObj:", reqestObj)
 
       return await axiosRepository.request(reqestObj);
     } catch (error) {
@@ -95,7 +95,7 @@ export const UserService = {
   },
 
   UpdateProfile: async (id,body) => {
-    console.log("🚀 ~ file: index.jsx:98 ~ UpdateProfile: ~ id:", id)
+    // console.log("🚀 ~ file: index.jsx:98 ~ UpdateProfile: ~ id:", id)
     
     const reqestObj = new requestModel();
     try {
@@ -104,7 +104,7 @@ export const UserService = {
       reqestObj.data = body;
       reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
 
-      console.log("🚀 ~ file: index.jsx:89 ~ FetchProfile: ~ reqestObj:", reqestObj)
+      // console.log("🚀 ~ file: index.jsx:89 ~ FetchProfile: ~ reqestObj:", reqestObj)
 
       return await axiosRepository.request(reqestObj);
     } catch (error) {
@@ -112,7 +112,7 @@ export const UserService = {
     }
   },
   OwnProfile: async () => {
-   console.log("🚀 ~ file: index.jsx:115 ~ OwnProfile: ~ OwnProfile:", "OwnProfile")
+   // console.log("🚀 ~ file: index.jsx:115 ~ OwnProfile: ~ OwnProfile:", "OwnProfile")
    
     
     const reqestObj = new requestModel();
@@ -122,7 +122,7 @@ export const UserService = {
       reqestObj.data = null;
       reqestObj.headers = `Authorization: Bearer ${JSON.parse(localStorage.getItem('token'))}`
 
-      console.log("🚀 ~ file: index.jsx:125 ~ OwnProfile: ~ reqestObj:", reqestObj)
+      // console.log("🚀 ~ file: index.jsx:125 ~ OwnProfile: ~ reqestObj:", reqestObj)
 
       return await axiosRepository.request(reqestObj);
     } catch (error) {

@@ -29,7 +29,7 @@ export default function SignUpPage(props) {
     console.log("🚀 ~ file: SignUpPage.jsx:25 ~ SignUpPage ~ state?.signup_data?.status:", state?.signup_data?.status)
     if(params.id==undefined){
     if (state?.signup_data?.status == 200) {
-        nevigate('/')
+        nevigate('/login')
     }
 }
     console.log("🚀 ~ file: SignUpPage.jsx:29 ~ useEffect ~ state?.view_profile?.data[0].name:", state?.view_profile?.data[0]?.name)

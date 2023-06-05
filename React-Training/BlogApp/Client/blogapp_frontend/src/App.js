@@ -15,7 +15,7 @@ import Editroles from "./Components/Editroles";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <Navbar />
         <Routes>
           <Route element={<ProtectedRoutes />}>
@@ -31,8 +31,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage  text="Sign Up"/>} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
-      </BrowserRouter>
-      {/* <Editroles/> */}
+      </BrowserRouter> */}
+      <Editroles/>
     </div>
   );
 }
