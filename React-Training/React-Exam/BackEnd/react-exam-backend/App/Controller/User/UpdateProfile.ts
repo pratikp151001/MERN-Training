@@ -15,18 +15,23 @@ const UpdateUser = async (req: Request, res: Response) => {
         let id = (req as any).data
         console.log("🚀 ~ file: GetAllUser.ts:11 ~ FetchAllUsers ~ id:", id)
 
-        const User: UserRegistrationModel = {
-            name: req.body.name,
-            email:  req.body.email,
-            password:  req.body.password,
-            mobile:  req.body.mobile,
+        const user= await UserRepository.UserRepository.UserProfile(id)
+        console.log("🚀 ~ file: UpdateProfile.ts:19 ~ UpdateUser ~ user:", user)
+
+        const User = {
+            // name: req.body.name,
+            // email:  user.email,
+            // password:  user?.password,
+            // mobile:  req.body.mobile,
+
+            ...user,name: req.body.name,mobile:  req.body.mobile,
         }
         console.log("🚀 ~ file: UserRegistration.ts:22 ~ RegisterUser ~ User:", User)
       
 
-        let encryptedPassword = await bcrypt.hash(User.password, 10);
-        console.log("🚀 ~ file: UserRegistration.ts:23 ~ RegisterUser ~ encryptedPassword:", encryptedPassword)
-        User.password = encryptedPassword;
+        // let encryptedPassword = await bcrypt.hash(User.password, 10);
+        // console.log("🚀 ~ file: UserRegistration.ts:23 ~ RegisterUser ~ encryptedPassword:", encryptedPassword)
+        // User.password = encryptedPassword;
 
        let resUSer = await UserRepository.UserRepository.UpdateUserProfile(id,User)
 

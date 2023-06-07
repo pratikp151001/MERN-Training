@@ -17,3 +17,37 @@ model User {
   password String
   mobile   String
 }
+
+model Suppiler {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  email   String
+  invoice Invoice[]
+}
+
+model Invoice {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  suppiler Suppiler @relation(fields: [sup_id], references: [id])
+  sup_id   String   @db.ObjectId
+  month    DateTime
+  Column1  String
+  Column2  String
+  Column3  String
+  Column4  String
+  Column5  String
+  Column6  String
+  Column7  String
+  Column8  String
+  Column9  String
+  Column10 String
+  Net String
+  VAT String
+  Advance String
+  Balance String
+}
+
+model Table_Headers {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  month   DateTime
+  headers Json
+}

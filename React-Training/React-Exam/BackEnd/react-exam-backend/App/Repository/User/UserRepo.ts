@@ -49,7 +49,7 @@ class UserRepository {
         return User;
     }
 
-    async UpdateUserProfile(id: string,user:UserRegistrationModel) {
+    async UpdateUserProfile(id: string,user:any) {
         let User = await prisma.user.update(
             {
                 where:

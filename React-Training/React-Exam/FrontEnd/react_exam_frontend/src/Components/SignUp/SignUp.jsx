@@ -15,6 +15,7 @@ import UserUpdateProfileAction from '../../Redux/Actions/UpdateProfileAction'
 export default function SignUp(props) {
     const nevigate = useNavigate()
     const [formvalue, setformvalue] = useState({})
+    const[disable,setdisable]=useState(false)
     const dispatch = useDispatch()
     const state = useSelector((state) => state.user)
     console.log("🚀 ~ file: SignUp.jsx:18 ~ SignUp ~ state:", state)
@@ -75,7 +76,7 @@ export default function SignUp(props) {
     useEffect(() => {
         if (Url.includes("profile")) {
             console.log("🚀 ~ file: SignUp.jsx:62 ~ useEffect ~ Url:", "Setting Values")
-            
+            setdisable(true)
             
             setformvalue({
                 ...formvalue,
@@ -114,6 +115,7 @@ export default function SignUp(props) {
                                             onChange={(e) => getFieldsData(e)}
                                             required
                                             value={formvalue.email}
+                                            disabled={disable}
                                             className='field  m-3' />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -130,6 +132,7 @@ export default function SignUp(props) {
                                             variant="outlined"
                                             onChange={(e) => getFieldsData(e)}
                                             required
+                                            disabled={disable}
                                             value={formvalue.password}
                                             className='field  m-3' />
                                     </Grid>

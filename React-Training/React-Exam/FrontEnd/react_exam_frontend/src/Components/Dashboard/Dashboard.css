@@ -1,0 +1,14 @@
+.tablefields{
+    border: none;
+    text-align: center;
+    width: 80% !important;
+    /* outline: none; */
+}
+th{
+    padding: 5px !important;
+    font-weight: bold !important;
+}
+th,td{
+    border: 1px rgb(192, 190, 190) solid !important;
+    padding: 5px !important;
+}
