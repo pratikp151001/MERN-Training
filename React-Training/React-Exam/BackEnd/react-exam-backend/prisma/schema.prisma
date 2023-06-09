@@ -29,7 +29,27 @@ model Invoice {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   suppiler Suppiler @relation(fields: [sup_id], references: [id])
   sup_id   String   @db.ObjectId
-  month    DateTime
+  month    String
+  Column1  Int
+  Column2  Int
+  Column3  Int
+  Column4  Int
+  Column5  Int
+  Column6  Int
+  Column7  Int
+  Column8  Int
+  Column9  Int
+  Column10 Int
+  Net Int
+  VAT Int
+  Advance Int
+  Balance Int
+  isApprove Boolean
+}
+
+model Table_Headers {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  month   String
   Column1  String
   Column2  String
   Column3  String
@@ -40,14 +60,5 @@ model Invoice {
   Column8  String
   Column9  String
   Column10 String
-  Net String
-  VAT String
-  Advance String
-  Balance String
-}
-
-model Table_Headers {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  month   DateTime
-  headers Json
+  
 }

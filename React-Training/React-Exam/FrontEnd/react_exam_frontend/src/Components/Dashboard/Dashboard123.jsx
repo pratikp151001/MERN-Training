@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,96 +19,155 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './Dashboard.css'
+import { useDispatch, useSelector } from 'react-redux';
+import FetchSuppilers from '../../Redux/Actions/FetchSuppillersAction';
+import PostData from '../../Redux/Actions/PostDataAction';
+import FetchHeaders from '../../Redux/Actions/fetchHeaders';
+import PostHeaders from '../../Redux/Actions/PostHeaders';
 
 export default function DashboardABC() {
+    const dispatch = useDispatch()
+    const [date, setdate] = useState(dayjs(Date.now()))
+    const state = useSelector((state) => state.suppiller.suppiller_data)
+    const headers = useSelector((state) => state.headers)
+    console.log("🚀 ~ file: Dashboard123.jsx:32 ~ DashboardABC ~ headers:", headers)
+    // console.log("🚀 ~ file: Dashboard123.jsx:28 ~ DashboardABC ~ state:", state)
+    useEffect(() => {
+        let Date = (date.toString()).split(" ")
+        let month = Date[2] + " " + Date[3]
+        console.log("🚀 ~ file: Dashboard123.jsx:33 ~ useEffect ~ DATE:", month)
 
-    const [date, setdate] = useState()
-    const [data, setdata] = useState([
-        {
-            "Column1": 0.00,
-            "Column2": 0.00,
-            "Column3": 0.00,
-            "Column4": 0.00,
-            "Column5": 0.00,
-            "Column6": 5.00,
-            "Column7": 0.00,
-            "Column8": 0.00,
-            "Column9": 0.00,
-            "Column10": 0.00,
-            "Net": 5.00,
-            "VAT": 0.00,
-            "Advance": 0.00,
-            "Balance": 6.00
-        },
-        {
-            "Column1": 0.00,
-            "Column2": 0.00,
-            "Column3": 0.00,
-            "Column4": 0.00,
-            "Column5": 0.00,
-            "Column6": 0.00,
-            "Column7": 0.00,
-            "Column8": 0.00,
-            "Column9": 0.00,
-            "Column10": 0.00,
-            "Net": 0.00,
-            "VAT": 0.00,
-            "Advance": 0.00,
-            "Balance": 0.00
-        }, {
-            "Column1": 0.00,
-            "Column2": 0.00,
-            "Column3": 0.00,
-            "Column4": 0.00,
-            "Column5": 0.00,
-            "Column6": 0.00,
-            "Column7": 0.00,
-            "Column8": 0.00,
-            "Column9": 0.00,
-            "Column10": 0.00,
-            "Net": 0.00,
-            "VAT": 0.00,
-            "Advance": 0.00,
-            "Balance": 0.00
+        dispatch(FetchSuppilers(month))
+        dispatch(FetchHeaders(month))
+    }, [date,headers.post_headerdata])
+
+    const [data, setdata] = useState([])
+    const [Header, setHeader] = useState([])
+
+    useEffect(() => {
+        if (state) {
+            let value = [];
+            if (state[0].invoice.length) {
+                state.map((item, index) => {
+                    console.log("🚀 ~ file: Dashboard123.jsx:98 ~ state.map ~ item:", item)
+
+                    value.push({
+                        "invoice_id": item.invoice[0].id,
+                        "sup_id": item.id,
+                        "suppillerName": item.name,
+                        "Column1": item.invoice[0].Column1,
+                        "Column2": item.invoice[0].Column2,
+                        "Column3": item.invoice[0].Column3,
+                        "Column4": item.invoice[0].Column4,
+                        "Column5": item.invoice[0].Column5,
+                        "Column6": item.invoice[0].Column6,
+                        "Column7": item.invoice[0].Column7,
+                        "Column8": item.invoice[0].Column8,
+                        "Column9": item.invoice[0].Column9,
+                        "Column10": item.invoice[0].Column10,
+                        "Net": item.invoice[0].Net,
+                        "VAT": item.invoice[0].VAT,
+                        "Advance": item.invoice[0].Advance,
+                        "Balance": item.invoice[0].Balance
+                    })
+
+                    console.log("🚀 ~ file: Dashboard123.jsx:91 ~ DashboardABC ~ value: !!!!!!!!!", value)
+
+
+                })
+
+                console.log("🚀 ~ file: Dashboard123.jsx:92 ~ useEffect ~ state:", state)
+            }
+            else {
+
+
+                state.map((item, index) => {
+                    value.push({
+                        "invoice_id": null,
+                        "sup_id": item.id,
+                        "suppillerName": item.name,
+                        "Column1": 0.00,
+                        "Column2": 0.00,
+                        "Column3": 0.00,
+                        "Column4": 0.00,
+                        "Column5": 0.00,
+                        "Column6": 0.00,
+                        "Column7": 0.00,
+                        "Column8": 0.00,
+                        "Column9": 0.00,
+                        "Column10": 0.00,
+                        "Net": 0.00,
+                        "VAT": 0.00,
+                        "Advance": 0.00,
+                        "Balance": 0.00
+                    })
+
+                    console.log("🚀 ~ file: Dashboard123.jsx:91 ~ DashboardABC ~ value: !!!!!!!!!", value)
+
+
+                })
+                console.log("🚀 ~ file: Dashboard123.jsx:115 ~ state.map ~ state:", state)
+            }
+            setdata(value)
         }
+        console.log("🚀 ~ file: Dashboard123.jsx:114 ~ useEffect ~ headers:", headers)
+        if (headers) {
+            if (headers.headers_data != null && headers.headers_data.length) {
+                setHeader([{
+                    "header_id": headers.headers_data[0].id,
+                    "Column1": headers.headers_data[0].Column1,
+                    "Column2": headers.headers_data[0].Column2,
+                    "Column3": headers.headers_data[0].Column3,
+                    "Column4": headers.headers_data[0].Column4,
+                    "Column5": headers.headers_data[0].Column5,
+                    "Column6": headers.headers_data[0].Column6,
+                    "Column7": headers.headers_data[0].Column7,
+                    "Column8": headers.headers_data[0].Column8,
+                    "Column9": headers.headers_data[0].Column9,
+                    "Column10": headers.headers_data[0].Column10,
+                    "Net": "Net",
+                    "VAT": "VAT",
+                    "Advance": "Advance",
+                    "Balance": "Balance"
+                }])
+            }
+            else {
+                setHeader([{
+                    "header_id": null,
+                    "Column1": "Column1",
+                    "Column2": "Column2",
+                    "Column3": "Column3",
+                    "Column4": "Column4",
+                    "Column5": "Column5",
+                    "Column6": "Column6",
+                    "Column7": "Column7",
+                    "Column8": "Column8",
+                    "Column9": "Column9",
+                    "Column10": "Column10",
+                    "Net": "Net",
+                    "VAT": "VAT",
+                    "Advance": "Advance",
+                    "Balance": "Balance"
+                }])
 
-    ])
+            }
+        }
+    }, [state,headers.post_headerdata])
 
-    const [Header, setHeader] = useState([
-        {
-            "Column1": "Column1",
-            "Column2": "Column2",
-            "Column3": "Column3",
-            "Column4": "Column4",
-            "Column5": "Column5",
-            "Column6": "Column6",
-            "Column7": "Column7",
-            "Column8": "Column8",
-            "Column9": "Column9",
-            "Column10": "Column10",
-            "Net": "Net",
-            "VAT": "VAT",
-            "Advance": "Advance",
-            "Balance": "Balance"
-        }])
+
+
+
+
+    // console.log("QQQQQQQQQQQQQQQQQQQQqq",state[0]?.invoice)
+
+
+
+
     const handlemonthChange = (e) => {
         setdate(dayjs(new Date(e.$y, e.$M + 1, 0)))
 
         //    console.log("🚀 ~ file: Dashboard.jsx:15 ~ handlemonthChange ~  new Date(year, month + 1, 0):",  new Date(e.$y, e.$M + 1, 0))
     }
-    // const rows = [
-    //     {x1
-    //         calories: "dsv",
-    //         fat: "Fea",
-    //         carbs: "Dv",
-    //         protein: "sdvsd"
-
-
-
-
-    //     }
-    // ]
-
 
     const handleDataChange = (e, rowno) => {
         console.log("🚀 ~ file: Dashboard.jsx:43 ~ handleDataChange ~ rowno:", rowno)
@@ -170,34 +229,39 @@ export default function DashboardABC() {
         setHeader(updateddata)
     }
 
+    const SaveClicked = () => {
+        // alert(typeof(date))
 
+        const DATE = (date.toString()).split(" ")
+        console.log("DATE", DATE)
 
+        const finalDATA = data.map((item, index) => {
+            return { ...item, month: DATE[2] + " " + DATE[3] }
+        })
+        dispatch(PostData({ data: finalDATA }))
+        console.log("🚀 ~ file: Dashboard123.jsx:236 ~ finalDATA ~ finalDATA:", finalDATA)
 
+        const tblHeader = {
+            data: {
+                Column1: Header[0].Column1,
+                Column2: Header[0].Column2,
+                Column3: Header[0].Column3,
+                Column4: Header[0].Column4,
+                Column5: Header[0].Column5,
+                Column6: Header[0].Column6,
+                Column7: Header[0].Column7,
+                Column8: Header[0].Column8,
+                Column9: Header[0].Column9,
+                Column10: Header[0].Column10,
+                month: DATE[2] + " " + DATE[3]
+            },
+            header_id: Header[0].header_id,
+        }
+        console.log("🚀 ~ file: Dashboard123.jsx:238 ~ SaveClicked ~ tblHeader:", tblHeader)
 
-    // const calculateNet = (row, index) => {
+        dispatch(PostHeaders({ tableHeaders: tblHeader }))
 
-    //     let Net = parseInt(row.Column1) + parseInt(row.Column2) + parseInt(row.Column3) + parseInt(row.Column4) + parseInt(row.Column5)
-    //         + parseInt(row.Column6) + parseInt(row.Column7) + parseInt(row.Column8) + parseInt(row.Column9) + parseInt(row.Column10)
-
-    //     const updateddata = data.map((row, i) => {
-
-    //         if (index == i) {
-
-    //             return { ...row, "Net": Net }
-
-    //         }
-    //         else {
-    //             return row
-    //         }
-    //     })
-    //     console.log("🚀 ~ file: Dashboard.jsx:133 ~ updateddata ~ updateddata:", updateddata)
-
-    //     //setdata(updateddata)
-
-    //     return Net
-
-
-    // }
+    }
 
     return (
         <>
@@ -219,7 +283,7 @@ export default function DashboardABC() {
 
                                 <Grid item xs={5}>
 
-                                    <DatePicker label={'"Choose Month"'} views={['month', 'year']} onChange={(e) => { handlemonthChange(e) }} />
+                                    <DatePicker label={'"Choose Month"'} views={['month', 'year']} value={date} onChange={(e) => { handlemonthChange(e) }} />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -298,26 +362,6 @@ export default function DashboardABC() {
                                         </>
 
                                     ))}
-
-
-
-
-                                    {/* <TableCell align="center">Hair Service</TableCell>
-                                    <TableCell align="center">Beauty</TableCell>
-                                    <TableCell align="center">Floor Ma</TableCell>
-                                    <TableCell align="center">Cafe</TableCell>
-                                    <TableCell align="center">Top up</TableCell>
-                                    <TableCell align="center">PR and</TableCell>
-                                    <TableCell align="center">Hair Ser..</TableCell>
-                                    <TableCell align="center">Custom</TableCell>
-                                    <TableCell align="center">Custom..</TableCell>
-                                    <TableCell align="center">Admin</TableCell>
-                                    <TableCell align="center">Bupa/</TableCell>
-                                    <TableCell align="center">Net</TableCell>
-                                    <TableCell align="center">VAT</TableCell>
-                                    <TableCell align="center">Gross</TableCell>
-                                    <TableCell align="center">Advance</TableCell>
-                                    <TableCell align="center">Balance</TableCell> */}
                                 </TableRow>
                             </TableHead>
                             {data && <TableBody>
@@ -327,7 +371,7 @@ export default function DashboardABC() {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell component="th" scope="row">{index + 1}</TableCell>
-                                        <TableCell align="center">"row.Column1"</TableCell>
+                                        <TableCell align="center">{row.suppillerName}</TableCell>
                                         <TableCell align="center"><input type="number" value={row.Column1} name="Column1" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
                                         <TableCell align="center"><input type="number" value={row.Column2} name="Column2" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
                                         <TableCell align="center"><input type="number" value={row.Column3} name="Column3" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
@@ -355,15 +399,15 @@ export default function DashboardABC() {
                                         <TableCell align="center"><input type="number"
                                             value={row.Balance}
                                             disabled name="Balance" readOnly="true" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                             <TableCell align="center"><FormControlLabel
-                                                // value={data?.id}
-                                                control={<Checkbox />}
-                                                // label={data?.permission_name}
-                                                // label="sdv"
-                                                // onChange={(e) => { getvalue(e) }}
-                                                className='ms-2'
-                                                labelPlacement="end"
-                                            /></TableCell>
+                                        <TableCell align="center"><FormControlLabel
+                                            // value={data?.id}
+                                            control={<Checkbox />}
+                                            // label={data?.permission_name}
+                                            // label="sdv"
+                                            // onChange={(e) => { getvalue(e) }}
+                                            className='ms-2'
+                                            labelPlacement="end"
+                                        /></TableCell>
 
                                         {/* 
                                         "Net": 0.00,
@@ -376,10 +420,14 @@ export default function DashboardABC() {
                             </TableBody>}
                         </Table>
                     </TableContainer>
+
+                    <Button variant="contained" className='ms-2 mt-5' onClick={() => { SaveClicked() }} >Save</Button>
+
                 </DemoContainer>
             </LocalizationProvider >
+            {/* {JSON.stringify(Header)} */}
             {JSON.stringify(Header)}
-            {JSON.stringify(data)}
+
         </>
     )
 }
