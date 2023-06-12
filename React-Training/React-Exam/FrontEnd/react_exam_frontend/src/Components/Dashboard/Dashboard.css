@@ -12,3 +12,26 @@ th,td{
     border: 1px rgb(192, 190, 190) solid !important;
     padding: 5px !important;
 }
+.approve{
+    background-color: rgb(218, 247, 218);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.savebtn{
+    width: 50px;
+}
+.SaveButton{
+  
+  text-align: end;
+
+}

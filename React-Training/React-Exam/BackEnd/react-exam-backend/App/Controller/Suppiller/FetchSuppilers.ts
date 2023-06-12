@@ -15,7 +15,7 @@ const FetchSuppiler=async(req:Request,res:Response)=>{
        
         // let id=req.params.id
         // console.log("🚀 ~ file: GetUserbyId.ts:14 ~ FetchUserById ~ id:", id)
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAa",req)
+        // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAa",req)
 
         let month=req.params.month
         console.log("🚀 ~ file: FetchSuppilers.ts:20 ~ FetchSuppiler ~ month:", month)

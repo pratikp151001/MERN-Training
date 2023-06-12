@@ -24,14 +24,24 @@ import FetchSuppilers from '../../Redux/Actions/FetchSuppillersAction';
 import PostData from '../../Redux/Actions/PostDataAction';
 import FetchHeaders from '../../Redux/Actions/fetchHeaders';
 import PostHeaders from '../../Redux/Actions/PostHeaders';
+import EmailActions from '../../Redux/Actions/SendEmail';
+import DownloadPDF from '../../Redux/Actions/DownloadPDf';
+import axios from 'axios';
 
 export default function DashboardABC() {
     const dispatch = useDispatch()
+    // const [allCheck, setallCheck] = useState()
+
+    const [checkedPermission, setcheckedPermission] = useState([])
     const [date, setdate] = useState(dayjs(Date.now()))
+    const pdfData = useSelector((state) => state.pdf)
+    console.log("🚀 ~ file: Dashboard123.jsx:37 ~ DashboardABC ~ pdfData:", pdfData)
     const state = useSelector((state) => state.suppiller.suppiller_data)
     const headers = useSelector((state) => state.headers)
     console.log("🚀 ~ file: Dashboard123.jsx:32 ~ DashboardABC ~ headers:", headers)
     // console.log("🚀 ~ file: Dashboard123.jsx:28 ~ DashboardABC ~ state:", state)
+
+
     useEffect(() => {
         let Date = (date.toString()).split(" ")
         let month = Date[2] + " " + Date[3]
@@ -39,7 +49,7 @@ export default function DashboardABC() {
 
         dispatch(FetchSuppilers(month))
         dispatch(FetchHeaders(month))
-    }, [date,headers.post_headerdata])
+    }, [date, headers.post_headerdata])
 
     const [data, setdata] = useState([])
     const [Header, setHeader] = useState([])
@@ -54,6 +64,7 @@ export default function DashboardABC() {
                     value.push({
                         "invoice_id": item.invoice[0].id,
                         "sup_id": item.id,
+                        "sup_email": item.email,
                         "suppillerName": item.name,
                         "Column1": item.invoice[0].Column1,
                         "Column2": item.invoice[0].Column2,
@@ -68,7 +79,8 @@ export default function DashboardABC() {
                         "Net": item.invoice[0].Net,
                         "VAT": item.invoice[0].VAT,
                         "Advance": item.invoice[0].Advance,
-                        "Balance": item.invoice[0].Balance
+                        "Balance": item.invoice[0].Balance,
+                        "isApprove": item.invoice[0].isApprove
                     })
 
                     console.log("🚀 ~ file: Dashboard123.jsx:91 ~ DashboardABC ~ value: !!!!!!!!!", value)
@@ -99,7 +111,8 @@ export default function DashboardABC() {
                         "Net": 0.00,
                         "VAT": 0.00,
                         "Advance": 0.00,
-                        "Balance": 0.00
+                        "Balance": 0.00,
+                        "isApprove": false
                     })
 
                     console.log("🚀 ~ file: Dashboard123.jsx:91 ~ DashboardABC ~ value: !!!!!!!!!", value)
@@ -152,14 +165,30 @@ export default function DashboardABC() {
 
             }
         }
-    }, [state,headers.post_headerdata])
+    }, [state, headers.post_headerdata])
+
+
+    //GET  CHECKBOX VALUE
+    const getvalue = (e) => {
+
+        console.log("🚀 ~ file: Editroles.jsx:30 ~ getvalue ~ e:", e)
+        const { checked, value } = e.target
+        console.log("🚀 ~ file: Editroles.jsx:25 ~ getvalue ~ value:", value)
+        console.log("🚀 ~ file: Editroles.jsx:25 ~ getvalue ~ checked:", checked)
+        if (checked) {
+            setcheckedPermission([...checkedPermission, value])
+        }
+        else {
+            setcheckedPermission([...checkedPermission.filter(per => per !== value)])
+        }
 
 
 
 
+        // alert(e.target.checked)
+        console.log("🚀 ~ file: Editroles.jsx:14 ~ getvalue ~ e.target.label:", e.target.label)
 
-    // console.log("QQQQQQQQQQQQQQQQQQQQqq",state[0]?.invoice)
-
+    }
 
 
 
@@ -236,7 +265,15 @@ export default function DashboardABC() {
         console.log("DATE", DATE)
 
         const finalDATA = data.map((item, index) => {
-            return { ...item, month: DATE[2] + " " + DATE[3] }
+            console.log("🚀 ~ file: Dashboard123.jsx:257 ~ finalDATA ~ item:", item.sup_email)
+
+            console.log("🚀 ~ file: Dashboard123.jsx:260 ~ finalDATA ~ checkedPermission.includes(item.sup_email):", checkedPermission.includes(item.sup_email))
+            if (checkedPermission.includes(item.sup_email)) {
+                return { ...item, month: DATE[2] + " " + DATE[3], isApprove: true }
+            }
+            else {
+                return { ...item, month: DATE[2] + " " + DATE[3] }
+            }
         })
         dispatch(PostData({ data: finalDATA }))
         console.log("🚀 ~ file: Dashboard123.jsx:236 ~ finalDATA ~ finalDATA:", finalDATA)
@@ -262,6 +299,70 @@ export default function DashboardABC() {
         dispatch(PostHeaders({ tableHeaders: tblHeader }))
 
     }
+
+
+    //Set All Check Box
+
+    // const setAllCheck=(e)=>{
+
+    //     const { checked, value } = e.target
+
+    //     if (checked) {
+    //         setallCheck(true)    
+    //     }
+    //     else {
+    //         setallCheck(false)
+    //     }
+
+    // }
+
+    //Send Email
+    const sendEmail = () => {
+        dispatch(EmailActions(checkedPermission))
+    }
+
+    //DownloadPDF
+
+    const DownloadPdf = async () => {
+        alert("DS")
+
+
+        promise.then((value) => {
+            console.log("🚀 ~ file: Dashboard123.jsx:331 ~ promise.then ~ value:", value)
+
+            let pdf = {
+                file: value,
+                file_name: "Invoice"
+            }
+            console.log("🚀 ~ file: Dashboard123.jsx:337 ~ promise.then ~ pdf:", pdf)
+
+            const pdfLink = `${pdf.file}`;
+            const anchorElement = document.createElement('a');
+            const fileName = `${pdf.file_name}.pdf`;
+            anchorElement.href ="data:application/pdf;base64,"+ value;
+            anchorElement.download = fileName;
+            anchorElement.click();
+
+
+        }
+        ).catch(console.log("object"))
+
+
+    }
+
+    let promise = new Promise(async function (resolve, reject) {
+        const DATE = (date.toString()).split(" ")
+        console.log("DATE", DATE)
+        const Data = {
+            emails: checkedPermission,
+            month: DATE[2] + " " + DATE[3]
+        }
+        const resp = await axios.post(`http://localhost:9988/pdf/${Data.month}`, Data.emails)
+        console.log("🚀 ~ file: Dashboard123.jsx:353 ~ promise ~ resp:", resp)
+        resolve(resp.data.data)
+
+    })
+
 
     return (
         <>
@@ -319,9 +420,9 @@ export default function DashboardABC() {
                         </Grid>
                         <Grid item xs={5}>
                             <Grid container spacing={2} className='text-start'>
-                                <Button variant="contained" className='ms-2 mt-5'>Email Invoice</Button>
-                                <Button variant="contained" className='ms-2 mt-5'>Approve Invoice</Button>
-                                <Button variant="contained" className='ms-2 mt-5'>Combine and Download</Button>
+                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { sendEmail() }}>Email Invoice</Button>
+                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { SaveClicked() }}>Approve Invoice</Button>
+                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { DownloadPdf() }}>Combine and Download</Button>
                             </Grid>
                         </Grid>
 
@@ -354,7 +455,7 @@ export default function DashboardABC() {
                                                 control={<Checkbox />}
                                                 // label={data?.permission_name}
                                                 // label="sdv"
-                                                // onChange={(e) => { getvalue(e) }}
+                                                // onChange={(e) => { setAllCheck(e) }}
                                                 className='ms-2'
                                                 labelPlacement="end"
                                             /></TableCell>
@@ -368,9 +469,10 @@ export default function DashboardABC() {
                                 {data.map((row, index) => (
                                     <TableRow
                                         key={index}
+                                        className={row.isApprove ? `approve` : ``}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                        <TableCell component="th" scope="row">{index + 1}</TableCell>
+                                        <TableCell component="th" scope="row">{index + 1} {row.isApprove}</TableCell>
                                         <TableCell align="center">{row.suppillerName}</TableCell>
                                         <TableCell align="center"><input type="number" value={row.Column1} name="Column1" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
                                         <TableCell align="center"><input type="number" value={row.Column2} name="Column2" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
@@ -400,33 +502,27 @@ export default function DashboardABC() {
                                             value={row.Balance}
                                             disabled name="Balance" readOnly="true" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
                                         <TableCell align="center"><FormControlLabel
-                                            // value={data?.id}
+                                            value={row.sup_email}
                                             control={<Checkbox />}
                                             // label={data?.permission_name}
                                             // label="sdv"
-                                            // onChange={(e) => { getvalue(e) }}
+                                            // checked={allCheck?true: ``}
+                                            onChange={(e) => { getvalue(e) }}
                                             className='ms-2'
                                             labelPlacement="end"
                                         /></TableCell>
-
-                                        {/* 
-                                        "Net": 0.00,
-            "VAT": 0.00,
-            "Advance": 0.00,
-            "Balance": 0.00 */}
-
                                     </TableRow>
                                 ))}
                             </TableBody>}
                         </Table>
                     </TableContainer>
-
-                    <Button variant="contained" className='ms-2 mt-5' onClick={() => { SaveClicked() }} >Save</Button>
-
+                    <div className="SaveButton me-5">
+                        <Button variant="contained" className='ms-2 mt-1 savebtn' onClick={() => { SaveClicked() }} >Save</Button>
+                    </div>
                 </DemoContainer>
             </LocalizationProvider >
             {/* {JSON.stringify(Header)} */}
-            {JSON.stringify(Header)}
+            {JSON.stringify(checkedPermission)}
 
         </>
     )

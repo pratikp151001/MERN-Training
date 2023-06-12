@@ -92,7 +92,7 @@ class UserRepository {
                         VAT:data.VAT,
                         Advance:data.Advance,
                         Balance:data.Balance,
-                        isApprove:false
+                        isApprove:data.isApprove
                        }
                     //   data
 

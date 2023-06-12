@@ -41,7 +41,7 @@ const PostSuppillerData = async (req: Request, res: Response) => {
                     VAT: parseInt(row.VAT),
                     Advance: parseInt(row.Advance),
                     Balance: parseInt(row.Balance),
-                    isApprove: false
+                    isApprove: Boolean(row.isApprove)
                 },
                 invoice_id: row.invoice_id
             }
