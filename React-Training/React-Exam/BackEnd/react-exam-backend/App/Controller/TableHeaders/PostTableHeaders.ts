@@ -6,14 +6,10 @@ import { responseModel } from "../../Model/ResponseModel";
 
 
 const PostTableHeaders = async (req: Request, res: Response) => {
-    console.log("🚀 ~ file: FetchTableHeaders.ts:52 ~ FetchHeaders ~ FetchHeaders:", PostTableHeaders)
-
 
 
     try {
         const data = req.body.tableHeaders
-        console.log("🚀 ~ file: PostSuppliersData.ts:19 ~ PostSuppillerData ~ data:", data)
-
         let resp;
         if (data.header_id) {
             resp = await HeaderRepository.HeaderRepository.UpdateTableHeaders(data.data, data.header_id)

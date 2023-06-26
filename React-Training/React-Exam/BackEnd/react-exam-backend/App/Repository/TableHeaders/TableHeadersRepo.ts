@@ -6,10 +6,7 @@ const prisma = new PrismaClient()
 
 class HeaderRepository {
     async GetTableHeaders(month: string) {
-        console.log("🚀 ~ file: TableHeadersRepo.ts:9 ~ HeaderRepository ~ GetTableHeaders ~ month:", month)
         try {
-            // console.log("🚀 ~ file: SuppilersRepo.ts:12 ~ UserRepository ~ GetSuppliers ~ prisma.invoice.findMany():",await prisma.invoice.findMany())
-
             let Headers = await prisma.table_Headers.findMany({
                 where: {
                     month: month
@@ -22,13 +19,10 @@ class HeaderRepository {
             return e
         }
     }
-    async PostTableHeaders(data:any) {
-        console.log("🚀 ~ file: TableHeadersRepo.ts:26 ~ HeaderRepository ~ PostTableHeaders ~ data:", data)
+    async PostTableHeaders(data: any) {
         try {
-            // console.log("🚀 ~ file: SuppilersRepo.ts:12 ~ UserRepository ~ GetSuppliers ~ prisma.invoice.findMany():",await prisma.invoice.findMany())
-
             let Headers = await prisma.table_Headers.create({
-               data:data
+                data: data
             })
             return Headers;
 
@@ -38,17 +32,14 @@ class HeaderRepository {
         }
     }
 
-    async UpdateTableHeaders(data:any,id:string) {
-        console.log("🚀 ~ file: TableHeadersRepo.ts:42 ~ HeaderRepository ~ UpdateTableHeaders ~ UpdateTableHeaders:", "UpdateTableHeaders")
+    async UpdateTableHeaders(data: any, id: string) {
         try {
-            // console.log("🚀 ~ file: SuppilersRepo.ts:12 ~ UserRepository ~ GetSuppliers ~ prisma.invoice.findMany():",await prisma.invoice.findMany())
-
             let Headers = await prisma.table_Headers.update({
-             
-                where:{
-                    id:id
+
+                where: {
+                    id: id
                 },
-                data:data
+                data: data
             })
             return Headers;
 

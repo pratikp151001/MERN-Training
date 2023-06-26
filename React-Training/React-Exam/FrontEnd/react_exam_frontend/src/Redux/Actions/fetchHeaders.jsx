@@ -9,13 +9,20 @@ const FetchHeaders = (month) => {
     return async function (dispatch) {
         dispatch({ type: HeaderActiontype.FETCH_HEADER_REQUEST })
 
-        // const res = await axios.post("http://localhost:9988/profile", {
+        // const res = await axios.post("http://localhost:9988/profile",
+        // {
         //     headers: {
         //         "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
         //     }
         // })
 
-        const resp =await axios.get(`http://localhost:9988/getheaders/${month}`)
+        const resp =await axios.get(`http://localhost:9988/getheaders/${month}`,
+         {
+            headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        }
+        )
 
         console.log("🚀 ~ file: fetchHeaders.jsx:20 ~ resp:", resp)
         if(resp.data.status==200){

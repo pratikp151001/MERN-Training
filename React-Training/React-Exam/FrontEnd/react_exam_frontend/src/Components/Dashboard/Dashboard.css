@@ -1,37 +1,63 @@
-.tablefields{
-    border: none;
-    text-align: center;
-    width: 80% !important;
-    /* outline: none; */
+.tablefields {
+  border: none;
+  text-align: center;
+  width: 80% !important;
+  /* outline: none; */
 }
-th{
-    padding: 5px !important;
-    font-weight: bold !important;
+th {
+  padding: 5px !important;
+  font-weight: bold !important;
 }
-th,td{
-    border: 1px rgb(192, 190, 190) solid !important;
-    padding: 5px !important;
+th,
+td {
+  border: 1px rgb(192, 190, 190) solid !important;
+  padding: 5px !important;
 }
-.approve{
-    background-color: rgb(218, 247, 218);
+.approve {
+  background-color: rgb(218, 247, 218);
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
-
 
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
-.savebtn{
-    width: 50px;
+.savebtn {
+  width: 50px;
+  background-color: green !important;
 }
-.SaveButton{
-  
+.SaveButton {
+  margin: 0% !important;
+  margin-right: 2% !important;
+
   text-align: end;
+}
 
+.advance {
+  color: red;
+}
+.balance,
+.net,
+.vat {
+  color: blue;
+}
+
+.MuiPaper-root {
+  padding: 0% !important;
+}
+.tableDiv {
+  margin: 2% !important;
+  margin-bottom: 1% !important;
+}
+
+.MuiButtonBase-root{
+    margin-top: 0% !important;
+}
+.upperBtns{
+    margin-top: 2% !important;
 }

@@ -8,8 +8,6 @@ import jwt from 'jsonwebtoken'
 
 
 const RegisterUser = async (req: Request, res: Response) => {
-    console.log("🚀 ~ file: UserRegistration.ts:64 ~ RegisterUser ~ RegisterUser:", RegisterUser)
-
   
     try {
 
@@ -19,11 +17,9 @@ const RegisterUser = async (req: Request, res: Response) => {
             password:  req.body.password,
             mobile:  req.body.mobile,
         }
-        console.log("🚀 ~ file: UserRegistration.ts:22 ~ RegisterUser ~ User:", User)
       
 
         let encryptedPassword = await bcrypt.hash(User.password, 10);
-        console.log("🚀 ~ file: UserRegistration.ts:23 ~ RegisterUser ~ encryptedPassword:", encryptedPassword)
         User.password = encryptedPassword;
 
        let resUSer = await UserRepository.UserRepository.RegisterUser(User)

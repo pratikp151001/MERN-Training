@@ -1,0 +1,20 @@
+/* .App {
+  text-align: center;
+  display: inline-block;
+} */
+
+.Sidebar{
+  width: 20% !important;
+  display: inline-block;
+  height: auto;
+  margin-top: 0% !important;
+  background-color: rgb(219, 220, 221);
+  height: 100vh;
+}
+.allPages{
+  padding-left: 1%;
+  width: 80% !important;
+  display: inline-block;
+  height: auto;
+
+}

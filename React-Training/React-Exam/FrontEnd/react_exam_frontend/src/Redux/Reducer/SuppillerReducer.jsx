@@ -21,6 +21,19 @@ const SuppilerReducer = (state = initialState, actions) => {
                 ...state, isLoading: false,error:actions.payload
             }
 
+            case (suppillerActiontypes.POST_DATA_REQUEST):
+            return {
+                ...state, isLoading: true
+            }
+        case (suppillerActiontypes.POST_DATA_SUCCESS):
+            return {
+                ...state, isLoading: false,post_data:actions.payload
+            }
+        case (suppillerActiontypes.POST_DATA_FAIL):
+            return {
+                ...state, isLoading: false,error:actions.payload
+            }
+
 
         default:
             return state

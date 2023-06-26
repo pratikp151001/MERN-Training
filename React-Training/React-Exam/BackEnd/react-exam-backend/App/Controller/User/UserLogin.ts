@@ -8,8 +8,6 @@ import jwt from 'jsonwebtoken'
 
 
 const LoginUser = async (req: Request, res: Response) => {
-    console.log("🚀 ~ file: UserLogin.ts:66 ~ LoginUser ~ LoginUser:", LoginUser)
-
 
     try {
 
@@ -20,11 +18,7 @@ const LoginUser = async (req: Request, res: Response) => {
 
         }
         let resUSer = await UserRepository.UserRepository.LoginUser(User.email)
-        console.log("🚀 ~ file: UserLogin.ts:23 ~ LoginUser ~ resUSer:", resUSer)
-
         if (resUSer && await bcrypt.compare(User.password, resUSer[0].password)) {
-            console.log("🚀 ~ file: UserLogin.ts:26 ~ LoginUser ~ resUSer:", resUSer)
-
 
             const key = process.env.TOKEN_KEY;
             const token = jwt.sign(

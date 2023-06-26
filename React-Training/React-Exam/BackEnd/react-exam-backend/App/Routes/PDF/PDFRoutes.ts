@@ -5,7 +5,7 @@ import VerifyToken from "../../MiddleWare/VerifyToken";
 
 const router=express.Router()
 
-router.post('/pdf/:month',Controller.GeneratePDF.generatePDF)
+router.post('/pdf/:month',VerifyToken,Controller.GeneratePDF.generatePDF)
 
 
 export  default router;

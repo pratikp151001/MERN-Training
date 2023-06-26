@@ -1,7 +1,9 @@
 import axios from "axios";
 import { UserActionTypes } from "../ActionType";
+import Swal from 'sweetalert2'
 
-const UserLoginAction=(userDetails) => {
+
+const UserLoginAction=(userDetails,nevigate) => {
     console.log("🚀 ~ file: UserLoginAction.jsx:5 ~ UserRegistartionAction ~ userDetails:", userDetails)
     return async function(dispatch){
         dispatch({type:UserActionTypes.USER_LOGIN_REQUEST})
@@ -18,6 +20,14 @@ const UserLoginAction=(userDetails) => {
                 type:UserActionTypes.USER_LOGIN_SUCCESS,
                 payload:res.data.data
             })
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Login Successfull',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            nevigate('/dashboard')
         }
         else{
             dispatch({

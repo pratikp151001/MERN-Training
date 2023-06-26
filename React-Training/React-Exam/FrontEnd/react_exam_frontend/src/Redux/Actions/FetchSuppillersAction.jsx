@@ -14,7 +14,13 @@ const FetchSuppilers = (month) => {
         //     }
         // })
 
-        const resp =await axios.get(`http://localhost:9988/getsuppilers/${month}`)
+        const resp =await axios.get(`http://localhost:9988/getsuppilers/${month}`,
+        {
+            headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        }
+        )
         console.log("🚀 ~ file: viewProfile.jsx:11 ~ returnfunction ~ res:", resp)
 
         if(resp.data.status==200){

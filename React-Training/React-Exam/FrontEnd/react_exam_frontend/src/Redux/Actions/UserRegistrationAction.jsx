@@ -1,7 +1,7 @@
 import axios from "axios";
 import { UserActionTypes } from "../ActionType";
 
-const UserRegistartionAction=(userDetails) => {
+const UserRegistartionAction=(userDetails,nevigate) => {
     console.log("🚀 ~ file: UserRegistrationAction.jsx:5 ~ UserRegistartionAction ~ userDetails:", userDetails)
     return async function(dispatch){
         dispatch({type:UserActionTypes.USER_REGISTRATION_REQUEST})
@@ -16,6 +16,7 @@ const UserRegistartionAction=(userDetails) => {
                 type:UserActionTypes.USER_REGISTRATION_SUCCESS,
                 payload:res.data.data
             })
+            nevigate('/login')
         }
         else{
             dispatch({

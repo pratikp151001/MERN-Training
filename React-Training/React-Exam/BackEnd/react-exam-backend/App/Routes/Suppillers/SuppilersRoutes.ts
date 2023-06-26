@@ -5,7 +5,7 @@ import VerifyToken from "../../MiddleWare/VerifyToken";
 
 const router=express.Router()
 
-router.get('/getsuppilers/:month',Controller.FetchSuppilers.FetchSuppiler)
-router.post('/postdata',Controller.PostSuppillerData.PostSuppillerData)
+router.get('/getsuppilers/:month',VerifyToken,Controller.FetchSuppilers.FetchSuppiler)
+router.post('/postdata',VerifyToken,Controller.PostSuppillerData.PostSuppillerData)
 
 export  default router;

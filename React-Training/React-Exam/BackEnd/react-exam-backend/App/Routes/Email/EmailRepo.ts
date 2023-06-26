@@ -5,6 +5,6 @@ import VerifyToken from "../../MiddleWare/VerifyToken";
 
 const router=express.Router()
 
-router.post('/sendemails',Controller.sendEmail.SendEmail)
+router.post('/sendemails',VerifyToken,Controller.sendEmail.SendEmail)
 
 export  default router;

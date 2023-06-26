@@ -6,16 +6,11 @@ import { responseModel } from "../../Model/ResponseModel";
 
 
 const ViewOwnProfile=async(req:Request,res:Response)=>{
-    console.log("🚀 ~ file: UserProfile.ts:9 ~ ViewOwnProfile ~ ViewOwnProfile:", ViewOwnProfile)
-
     try{
        
         let id = (req as any).data
-        console.log("🚀 ~ file: GetAllUser.ts:11 ~ FetchAllUsers ~ id:", id)
        
         // let id=req.params.id
-        // console.log("🚀 ~ file: GetUserbyId.ts:14 ~ FetchUserById ~ id:", id)
-
         let resUsers = await UserRepository.UserRepository.UserProfile(id)
 
         let response: responseModel = {

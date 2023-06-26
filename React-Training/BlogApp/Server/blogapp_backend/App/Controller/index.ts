@@ -13,5 +13,8 @@ import UpdateUser from "./User/UpdateUser"
 import ViewOwnProfile from "./User/ViewOwnProfile";
 
 import GetPermissios from "./Admin/GetPermissios";
+import AddRoles from "./Admin/AddRoles";
+import GetRoles from './Admin/fetchRoles'
+
 export default {AddBlog,FetchBlog,DeleteBlog,FetchSingleBolg,UpdateBlog,UserRegistration,UserLogin,FetchAllUsers,FetchUserById,DeleteUser,UpdateUser,ViewOwnProfile,
-    GetPermissios}
+    GetPermissios,AddRoles,GetRoles}

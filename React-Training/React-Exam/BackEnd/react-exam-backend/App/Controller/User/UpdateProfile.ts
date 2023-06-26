@@ -8,16 +8,9 @@ import jwt from 'jsonwebtoken'
 
 
 const UpdateUser = async (req: Request, res: Response) => {
-
-    console.log("🚀 ~ file: UpdateProfile.ts:57 ~ RegisterUser ~ RegisterUser:", "UpdateUser")
-
     try {
         let id = (req as any).data
-        console.log("🚀 ~ file: GetAllUser.ts:11 ~ FetchAllUsers ~ id:", id)
-
         const user= await UserRepository.UserRepository.UserProfile(id)
-        console.log("🚀 ~ file: UpdateProfile.ts:19 ~ UpdateUser ~ user:", user)
-
         const User = {
             // name: req.body.name,
             // email:  user.email,
@@ -26,11 +19,9 @@ const UpdateUser = async (req: Request, res: Response) => {
 
             ...user,name: req.body.name,mobile:  req.body.mobile,
         }
-        console.log("🚀 ~ file: UserRegistration.ts:22 ~ RegisterUser ~ User:", User)
       
 
         // let encryptedPassword = await bcrypt.hash(User.password, 10);
-        // console.log("🚀 ~ file: UserRegistration.ts:23 ~ RegisterUser ~ encryptedPassword:", encryptedPassword)
         // User.password = encryptedPassword;
 
        let resUSer = await UserRepository.UserRepository.UpdateUserProfile(id,User)

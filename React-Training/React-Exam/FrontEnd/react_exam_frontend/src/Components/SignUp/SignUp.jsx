@@ -15,13 +15,10 @@ import UserUpdateProfileAction from '../../Redux/Actions/UpdateProfileAction'
 export default function SignUp(props) {
     const nevigate = useNavigate()
     const [formvalue, setformvalue] = useState({})
-    const[disable,setdisable]=useState(false)
+    const [disable, setdisable] = useState(false)
     const dispatch = useDispatch()
     const state = useSelector((state) => state.user)
-    console.log("🚀 ~ file: SignUp.jsx:18 ~ SignUp ~ state:", state)
-
     const Url = window.location.href
-    console.log("🚀 ~ file: SignUp.jsx:22 ~ SignUp ~ Url:", Url)
     //GO To Log In Page
     const gotoLogin = () => {
         nevigate('/login')
@@ -42,7 +39,7 @@ export default function SignUp(props) {
 
         if (isValid) {
 
-            dispatch(UserRegistartionAction(formvalue))
+            dispatch(UserRegistartionAction(formvalue,nevigate))
         }
         else {
             alert("Please enter Valid Details")
@@ -52,44 +49,47 @@ export default function SignUp(props) {
     }
 
     //After Sign up nevigate to login
-    if (!Url.includes("profile")) {
-        if (state?.registerUser_data) {
-            nevigate('/login')
-        }
-    }
+    // if (!Url.includes("profile")) {
+    //     if (state?.registerUser_data) {
+    //         nevigate('/login')
+    //     }
+    // }
+    // else{
+    //     if (state?.updated_profile) {
+    //         nevigate('/dashboard')
+    //     }
+    // }
 
     //Handle Update Profile
-    const handleUpdateProfile=async()=>{
+    const handleUpdateProfile = async () => {
         const isValid = await SignUpScheema.isValid(formvalue)
 
         if (isValid) {
 
-            dispatch(UserUpdateProfileAction(formvalue))
+            dispatch(UserUpdateProfileAction(formvalue,nevigate))
         }
         else {
             alert("Please enter Valid Details")
         }
         setformvalue({})
     }
-    
-    console.log("🚀 ~ file: SignUp.jsx:61 ~ useEffect ~ Url.includes", Url.includes("profile"))
+
     useEffect(() => {
         if (Url.includes("profile")) {
-            console.log("🚀 ~ file: SignUp.jsx:62 ~ useEffect ~ Url:", "Setting Values")
             setdisable(true)
-            
+
             setformvalue({
                 ...formvalue,
                 name: state?.viewprofile_data?.name,
-                email:state?.viewprofile_data?.email,
-                mobile:state?.viewprofile_data?.mobile,
-                password:state?.viewprofile_data?.password
+                email: state?.viewprofile_data?.email,
+                mobile: state?.viewprofile_data?.mobile,
+                password: state?.viewprofile_data?.password
 
 
             })
 
         }
-    }, [state?.viewprofile_data,props])
+    }, [state?.viewprofile_data, props])
 
     return (
         <>
@@ -143,12 +143,12 @@ export default function SignUp(props) {
 
                             </Grid>
                         </Grid>
-                      { !Url.includes("profile") ?  <><Button variant="contained" onClick={gotoLogin} name="login" className='m-3 justify-content-center'>GO TO LogIn</Button>
-                        <Button  onClick={clickSignup} variant="contained" name="login" className='m-3'>Sign Up</Button></>
-                        : <Button  variant="contained" onClick={handleUpdateProfile} name="updateProfile" className='m-3'>Update Profile</Button>
+                        {!Url.includes("profile") ? <><Button variant="contained" onClick={gotoLogin} name="login" className='m-3 justify-content-center'>GO TO LogIn</Button>
+                            <Button onClick={clickSignup} variant="contained" name="login" className='m-3'>Sign Up</Button></>
+                            : <Button variant="contained" onClick={handleUpdateProfile} name="updateProfile" className='m-3'>Update Profile</Button>
                         }
                     </Container>
-                    {JSON.stringify(formvalue)}
+                    {/* {JSON.stringify(formvalue)} */}
                 </div >
             }
 

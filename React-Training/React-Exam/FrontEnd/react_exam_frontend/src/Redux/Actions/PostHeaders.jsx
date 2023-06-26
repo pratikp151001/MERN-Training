@@ -7,7 +7,13 @@ const PostHeaders = (data) => {
     return async function (dispatch) {
         dispatch({ type: HeaderActiontype.POST_HEADER_REQUEST })
 
-        const resp =await axios.post("http://localhost:9988/posttableheaders",data)
+        const resp =await axios.post("http://localhost:9988/posttableheaders",data,
+        {
+            headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        }
+        )
         console.log("🚀 ~ file: viewProfile.jsx:11 ~ returnfunction ~ res:", resp)
 
         if(resp.data.status==200){

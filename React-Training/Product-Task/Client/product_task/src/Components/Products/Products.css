@@ -1,0 +1,40 @@
+.card-img-top{
+  width: 150px !important;
+    height: 70px !important;
+    border: gray 1px solid;
+    padding: 5px;
+
+}
+.mainbodytable{
+  background-color: #d1e3f5;
+  padding-left: 2%;
+}
+.tableContainer{
+    width: 95% !important;
+}
+.MuiButtonBase-root{
+  width: 100px !important;
+}
+.searchfield{
+  text-align: right;
+  margin-right: 5%;
+}
+
+.boldText{
+  font-weight: bold !important;
+  background-color:#95c5f4;
+}
+.pagination{
+  margin-right: 3%;
+  margin-top: 0.5%;
+  justify-content: end !important;
+ 
+}
+ul .page-item a{
+  color:#1976d2 !important;
+  background-color: white;
+}
+.pagination .MuiInputBase-input{
+  height: 5px !important;
+  width: 30px !important;
+}

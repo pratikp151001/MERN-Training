@@ -11,18 +11,19 @@ import PersonIcon from '@mui/icons-material/Person';
 import OwnProfile from '../Redux/Actions/UserOwnProfile';
 import isUserLogedIn from '../Permissions/UserLogedIn';
 
+
 // console.log("QQQQQQQQQQQQQQWWWWWWWWWWWWWWWWWWWWWWWWWAaaaaaaaaaaaaaaaaa",PermissionCheck(PERMISSIONS.CREATE_USER_PERMISSION))
 
 
 export default function Navbar() {
-    
+
 
     // const token=localStorage.getItem('token')
 
 
     // console.log("🚀 ~ file: Navbar.jsx:12 ~ Navbar ~ token:", token)
 
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const state = useSelector((state) => state.user)
     console.log("🚀 ~ file: Navbar.jsx:21 ~ Navbar ~ state:", state)
     const nevigate = useNavigate()
@@ -50,7 +51,7 @@ export default function Navbar() {
                 </button>
 
                 <div className="collapse navbar-collapse justify-content-center" id="navbarTogglerDemo02">
-                  {isUserLogedIn() ? <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ">
+                    {isUserLogedIn() ? <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ">
                         <li className="nav-item active ms-3 pt-2">
                             <NavLink to="/" ><span> <PostAddIcon /> Add Blogs</span></NavLink>
                         </li>
@@ -60,18 +61,22 @@ export default function Navbar() {
                         <li className="nav-item ms-3 pt-2">
                             <NavLink to="/allusers" > <PeopleAltIcon />Users</NavLink>
                         </li>
-                    </ul>:``}
+
+                        {PermissionCheck(PERMISSIONS.DELETE_USER_PERMISSION) ? <li className="nav-item active ms-3 pt-2">
+                            <NavLink to="/addrole" ><span> <PostAddIcon /> Add Role</span></NavLink>
+                        </li> : ``}
+                    </ul> : ``}
 
                 </div>
                 <div className="collapse navbar-collapse justify-content-end">
-                {isUserLogedIn() ?<ul className="navbar-nav mr-auto mt-2 mt-lg-0 ">
+                    {isUserLogedIn() ? <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ">
                         <li className="nav-item active me-4 ">
-                           <button className='profile' onClick={()=>{dispatch(OwnProfile());nevigate('/profile')}} ><PersonIcon /></button> 
+                            <button className='profile' onClick={() => { dispatch(OwnProfile()); nevigate('/profile') }} ><PersonIcon /></button>
                         </li>
                         <li className="nav-item active me-4 ">
                             <button className='logout' onClick={() => { handleLogOut() }}><LogoutIcon /></button>
                         </li>
-                    </ul>:``}
+                    </ul> : ``}
                 </div>
 
             </nav>

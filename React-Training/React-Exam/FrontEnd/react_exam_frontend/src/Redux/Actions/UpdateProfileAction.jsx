@@ -1,11 +1,16 @@
 import axios from "axios";
 import { UserActionTypes } from "../ActionType";
+// import { useNavigate } from "react-router-dom";
 
-const UserUpdateProfileAction=(userDetails) => {
+
+const UserUpdateProfileAction=(userDetails,nevigate) => {
 console.log("🚀 ~ file: UpdateProfileAction.jsx:5 ~ UserUpdateProfileAction ~ userDetails:", userDetails)
 console.log("🚀 ~ file: UpdateProfileAction.jsx:29 ~ UserUpdateProfileAction ~ UserUpdateProfileAction:", UserUpdateProfileAction)
 
-    return async function(dispatch){
+return async function(dispatch){
+  
+console.log("🚀 ~ file: UpdateProfileAction.jsx:11 ~ returnfunction ~ nevigate:", nevigate)
+
         dispatch({type:UserActionTypes.UPDATE_PROFILE_REQUEST})
 
         const res=await axios.put("http://localhost:9988/updateprofile",userDetails,{
@@ -26,6 +31,9 @@ console.log("🚀 ~ file: UpdateProfileAction.jsx:29 ~ UserUpdateProfileAction ~
                 type:UserActionTypes.UPDATE_PROFILE_SUCCESS,
                 payload:res.data.data
             })
+
+        //    window.location.replace("/dashboard")
+        nevigate("/dashboard")
         }
         else{
             dispatch({

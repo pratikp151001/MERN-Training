@@ -7,6 +7,8 @@ import { useNavigate,NavLink } from 'react-router-dom';
 import ViewProfile from '../../Redux/Actions/viewProfile';
 import { useDispatch } from 'react-redux';
 import isUserLogedIn from '../../Permission/UserLogin';
+import image from '../../Assests/imageGG.png'
+
 
 export default function Navbar() {
     const nevigate=useNavigate()
@@ -15,13 +17,12 @@ export default function Navbar() {
     //LogOut 
     const handleLogOut = () => {
         localStorage.removeItem('token')
-        // localStorage.removeItem('logedInUserPermissions')
         nevigate('/login')
     }
     return (
         <>
             <nav className="navbar navbar-expand-lg">
-                <a className="navbar-brand ms-4 navbar-title " href="#">Navbar</a>
+                <a className="navbar-brand ms-4 navbar-title-image " href="#"><img className='navbarImage' src={image} alt="image" /></a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

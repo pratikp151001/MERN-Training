@@ -9,7 +9,7 @@ import './Dashboard.css'
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import Swal from 'sweetalert2';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -25,8 +25,8 @@ import PostData from '../../Redux/Actions/PostDataAction';
 import FetchHeaders from '../../Redux/Actions/fetchHeaders';
 import PostHeaders from '../../Redux/Actions/PostHeaders';
 import EmailActions from '../../Redux/Actions/SendEmail';
-import DownloadPDF from '../../Redux/Actions/DownloadPDf';
 import axios from 'axios';
+import Loader from '../Loader/Loader';
 
 export default function DashboardABC() {
     const dispatch = useDispatch()
@@ -34,9 +34,9 @@ export default function DashboardABC() {
 
     const [checkedPermission, setcheckedPermission] = useState([])
     const [date, setdate] = useState(dayjs(Date.now()))
-    const pdfData = useSelector((state) => state.pdf)
-    console.log("🚀 ~ file: Dashboard123.jsx:37 ~ DashboardABC ~ pdfData:", pdfData)
-    const state = useSelector((state) => state.suppiller.suppiller_data)
+    // const pdfData = useSelector((state) => state.pdf)
+    // console.log("🚀 ~ file: Dashboard123.jsx:37 ~ DashboardABC ~ pdfData:", pdfData)
+    const state = useSelector((state) => state.suppiller)
     const headers = useSelector((state) => state.headers)
     console.log("🚀 ~ file: Dashboard123.jsx:32 ~ DashboardABC ~ headers:", headers)
     // console.log("🚀 ~ file: Dashboard123.jsx:28 ~ DashboardABC ~ state:", state)
@@ -49,16 +49,17 @@ export default function DashboardABC() {
 
         dispatch(FetchSuppilers(month))
         dispatch(FetchHeaders(month))
-    }, [date, headers.post_headerdata])
+    }, [date, state.post_data, headers.post_headerdata])
 
     const [data, setdata] = useState([])
     const [Header, setHeader] = useState([])
 
     useEffect(() => {
-        if (state) {
+        if (state.suppiller_data) {
             let value = [];
-            if (state[0].invoice.length) {
-                state.map((item, index) => {
+            setcheckedPermission([])
+            if (state.suppiller_data[0].invoice.length) {
+                state.suppiller_data.map((item, index) => {
                     console.log("🚀 ~ file: Dashboard123.jsx:98 ~ state.map ~ item:", item)
 
                     value.push({
@@ -88,12 +89,12 @@ export default function DashboardABC() {
 
                 })
 
-                console.log("🚀 ~ file: Dashboard123.jsx:92 ~ useEffect ~ state:", state)
+                // console.log("🚀 ~ file: Dashboard123.jsx:92 ~ useEffect ~ state:", state)
             }
             else {
 
 
-                state.map((item, index) => {
+                state.suppiller_data.map((item, index) => {
                     value.push({
                         "invoice_id": null,
                         "sup_id": item.id,
@@ -165,7 +166,7 @@ export default function DashboardABC() {
 
             }
         }
-    }, [state, headers.post_headerdata])
+    }, [state.suppiller_data, headers.post_headerdata])
 
 
     //GET  CHECKBOX VALUE
@@ -205,15 +206,15 @@ export default function DashboardABC() {
         const updateddata = body.map((row, index) => {
 
             if (index == rowno) {
-                // if (e.target.name != "Advance") {
-                // let NetValue = parseInt(row.Column1) + parseInt(row.Column2) + parseInt(row.Column3) + parseInt(row.Column4) + parseInt(row.Column5)
-                //     + parseInt(row.Column6) + parseInt(row.Column7) + parseInt(row.Column8) + parseInt(row.Column9) + parseInt(row.Column10)
+                if (parseInt(e.target.value) < 0 || e.target.value == "") {
+                    return { ...row, [e.target.name]: parseInt(0) }
 
+                }
+                else {
+                    return { ...row, [e.target.name]: e.target.value }
 
-                //     return { ...row, [e.target.name]: e.target.value, Net: NetValue  }
-                // } else {
-                return { ...row, [e.target.name]: e.target.value }
-                // }
+                }
+
             }
             else {
                 return row
@@ -226,10 +227,10 @@ export default function DashboardABC() {
                 let NetValue = parseInt(row.Column1) + parseInt(row.Column2) + parseInt(row.Column3) + parseInt(row.Column4) + parseInt(row.Column5)
                     + parseInt(row.Column6) + parseInt(row.Column7) + parseInt(row.Column8) + parseInt(row.Column9) + parseInt(row.Column10)
 
-                let Balance = NetValue + ((NetValue * 20) / 100) - parseInt(row.Advance)
+                let Balance = NetValue + ((NetValue * parseInt(process.env.REACT_APP_VAT)) / 100) - parseInt(row.Advance)
 
 
-                return { ...row, [e.target.name]: e.target.value, Net: NetValue, Balance: Balance }
+                return { ...row, Net: NetValue, Balance: Balance }
 
             }
             else {
@@ -324,12 +325,29 @@ export default function DashboardABC() {
     //DownloadPDF
 
     const DownloadPdf = async () => {
-        alert("DS")
+        
+    let promise = new Promise(async function (resolve, reject) {
+        const DATE = (date.toString()).split(" ")
+        console.log("DATE", DATE)
+        const Data = {
+            emails: checkedPermission,
+            month: DATE[2] + " " + DATE[3]
+        }
+        const resp = await axios.post(`http://localhost:9988/pdf/${Data.month}`, Data.emails,
+            {
+                headers: {
+                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                }
+            }
+        )
+        console.log("🚀 ~ file: Dashboard123.jsx:353 ~ promise ~ resp:", resp)
+        resolve(resp.data.data)
 
+    })
 
         promise.then((value) => {
             console.log("🚀 ~ file: Dashboard123.jsx:331 ~ promise.then ~ value:", value)
-
+if(value){
             let pdf = {
                 file: value,
                 file_name: "Invoice"
@@ -339,190 +357,201 @@ export default function DashboardABC() {
             const pdfLink = `${pdf.file}`;
             const anchorElement = document.createElement('a');
             const fileName = `${pdf.file_name}.pdf`;
-            anchorElement.href ="data:application/pdf;base64,"+ value;
+            anchorElement.href = "data:application/pdf;base64," + value;
             anchorElement.download = fileName;
             anchorElement.click();
 
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Pdf Download Successfull',
+                showConfirmButton: false,
+                timer: 1500
+              })
+
 
         }
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!No Data present',
+              
+              })
+        }
+    }
         ).catch(console.log("object"))
 
 
     }
 
-    let promise = new Promise(async function (resolve, reject) {
-        const DATE = (date.toString()).split(" ")
-        console.log("DATE", DATE)
-        const Data = {
-            emails: checkedPermission,
-            month: DATE[2] + " " + DATE[3]
-        }
-        const resp = await axios.post(`http://localhost:9988/pdf/${Data.month}`, Data.emails)
-        console.log("🚀 ~ file: Dashboard123.jsx:353 ~ promise ~ resp:", resp)
-        resolve(resp.data.data)
-
-    })
 
 
     return (
         <>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>
-                    {/* <DatePicker label={'"Choose Month"'} views={['month', 'year']} />
+            {headers.isLoading ? (<Loader />) :
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>
+                        {/* <DatePicker label={'"Choose Month"'} views={['month', 'year']} />
                     <DatePicker label={"Select Date"} /> */}
 
 
-                    <Grid container spacing={2} className='ps-5'>
-                        <Grid item xs={12} className='text-start'>
-                            <b> Monthly Invoice List</b>
-                        </Grid>
-                        <Grid item xs={7} className='text-start'>
-                            <Grid container spacing={2}>
-                                <Grid item xs={3}>
-                                    <b>Choose Month</b>
-                                </Grid>
+                        <Grid container spacing={2} className='ps-5'>
+                            <Grid item xs={12} className='text-start'>
+                                <b> Monthly Invoice List</b>
+                            </Grid>
+                            <Grid item xs={7} className='text-start'>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={3}>
+                                        <b>Choose Month</b>
+                                    </Grid>
 
-                                <Grid item xs={5}>
+                                    <Grid item xs={5}>
 
-                                    <DatePicker label={'"Choose Month"'} views={['month', 'year']} value={date} onChange={(e) => { handlemonthChange(e) }} />
+                                        <DatePicker label={'"Choose Month"'} views={['month', 'year']} value={date} onChange={(e) => { handlemonthChange(e) }} />
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
 
-                        <Grid item xs={7}>
-                            <Grid container spacing={2} className='text-start'>
-                                <Grid item xs={3}>
-                                    <b>Date</b>
-                                </Grid>
+                            <Grid item xs={7}>
+                                <Grid container spacing={2} className='text-start'>
+                                    <Grid item xs={3}>
+                                        <b>Date</b>
+                                    </Grid>
 
-                                <Grid item xs={5}>
+                                    <Grid item xs={5}>
 
-                                    <DatePicker label={"Select Date"} format='DD/MM/YYYY' value={date} />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={5}>
-                            <Grid container spacing={2} className='text-start'>
-                                <Grid item xs={3}>
-                                    <b>Invoice Reference</b>
-                                </Grid>
-
-                                <Grid item xs={5}>
-
-                                    <DatePicker label={'"Choose Month"'} value={date} views={['month', 'year']} />
-
+                                        <DatePicker label={"Select Date"} format='DD/MM/YYYY' value={date} />
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={7}>
-                            <Grid container spacing={2} className='text-start'>
+                            <Grid item xs={5}>
+                                <Grid container spacing={2} className='text-start'>
+                                    <Grid item xs={3}>
+                                        <b>Invoice Reference</b>
+                                    </Grid>
+
+                                    <Grid item xs={5}>
+
+                                        <DatePicker label={'"Choose Month"'} value={date} views={['month', 'year']} />
+
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={5}>
-                            <Grid container spacing={2} className='text-start'>
-                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { sendEmail() }}>Email Invoice</Button>
-                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { SaveClicked() }}>Approve Invoice</Button>
-                                <Button variant="contained" className='ms-2 mt-5' onClick={() => { DownloadPdf() }}>Combine and Download</Button>
+                            <Grid item xs={7}>
+                                <Grid container spacing={2} className='text-start'>
+                                </Grid>
                             </Grid>
+                            <Grid item xs={5}>
+                                <Grid container spacing={2} className='text-start'>
+                                    <Button variant="contained" className='ms-2 mt-5 upperBtns' onClick={() => { sendEmail() }}>Email Invoice</Button>
+                                    <Button variant="contained" className='ms-2 mt-5 upperBtns' onClick={() => { SaveClicked() }}>Approve Invoice</Button>
+                                    <Button variant="contained" className='ms-2 mt-5 upperBtns' onClick={() => { DownloadPdf() }}>Combine and Download</Button>
+                                </Grid>
+                            </Grid>
+
                         </Grid>
 
-                    </Grid>
+                        <div className="tableDiv">
+                            <TableContainer className='ps-5 pe-5' component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Index</TableCell>
+                                            <TableCell align="center">suppiller</TableCell>
+                                            {Header.map((header, index) => (
+                                                <>
+                                                    <TableCell align="center"><input type="text" value={header.Column1} name="Column1" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column2} name="Column2" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column3} name="Column3" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column4} name="Column4" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column5} name="Column5" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column6} name="Column6" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column7} name="Column7" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column8} name="Column8" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column9} name="Column8" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Column10} name="Column10" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Net} name="Net" className='tablefields' /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.VAT} name="VAT" className='tablefields' /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Advance} name="Advance" className='tablefields' /></TableCell>
+                                                    <TableCell align="center"><input type="text" value={header.Balance} name="Balance" className='tablefields' /></TableCell>
+                                                    <TableCell align="center"><FormControlLabel
+                                                        // value={data?.id}
+                                                        control={<Checkbox />}
+                                                        // label={data?.permission_name}
+                                                        // label="sdv"
+                                                        // onChange={(e) => { setAllCheck(e) }}
+                                                        className='ms-2'
+                                                        labelPlacement="end"
+                                                    /></TableCell>
 
-                    <TableContainer className='ps-5 pe-5' component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell align="center">suppiller</TableCell>
-                                    {Header.map((header, index) => (
-                                        <>
-                                            <TableCell align="center"><input type="text" value={header.Column1} name="Column1" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column2} name="Column2" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column3} name="Column3" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column4} name="Column4" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column5} name="Column5" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column6} name="Column6" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column7} name="Column7" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column8} name="Column8" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column9} name="Column8" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Column10} name="Column10" className='tablefields' onChange={(e) => { handleheaderChange(e, index) }} /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Net} name="Net" className='tablefields' /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.VAT} name="VAT" className='tablefields' /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Advance} name="Advance" className='tablefields' /></TableCell>
-                                            <TableCell align="center"><input type="text" value={header.Balance} name="Balance" className='tablefields' /></TableCell>
-                                            <TableCell align="center"><FormControlLabel
-                                                // value={data?.id}
-                                                control={<Checkbox />}
-                                                // label={data?.permission_name}
-                                                // label="sdv"
-                                                // onChange={(e) => { setAllCheck(e) }}
-                                                className='ms-2'
-                                                labelPlacement="end"
-                                            /></TableCell>
+                                                </>
 
-                                        </>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                    {data && <TableBody>
+                                        {data.map((row, index) => (
+                                            <TableRow
+                                                key={index}
+                                                style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">{index + 1} {row.isApprove}</TableCell>
+                                                <TableCell align="center" style={{ color: "Blue" }}>{row.suppillerName}</TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column1} name="Column1" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column2} name="Column2" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column3} name="Column3" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column4} name="Column4" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column5} name="Column5" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column6} name="Column6" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column7} name="Column7" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column8} name="Column8" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column9} name="Column9" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Column10} name="Column10" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center">
+                                                    <input type="number" value=
+                                                        // {parseInt(row.Column1) + parseInt(row.Column2) + parseInt(row.Column3) + parseInt(row.Column4) + parseInt(row.Column5)
+                                                        // + parseInt(row.Column6) + parseInt(row.Column7) + parseInt(row.Column8) + parseInt(row.Column9) + parseInt(row.Column10)}
+                                                        // {calculateNet(row,index)}
+                                                        {row.Net}
+                                                        // onChange={(e) => {alert("dvs") }}
+                                                        disabled name="Net" className='tablefields net' />
 
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            {data && <TableBody>
-                                {data.map((row, index) => (
-                                    <TableRow
-                                        key={index}
-                                        className={row.isApprove ? `approve` : ``}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">{index + 1} {row.isApprove}</TableCell>
-                                        <TableCell align="center">{row.suppillerName}</TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column1} name="Column1" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column2} name="Column2" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column3} name="Column3" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column4} name="Column4" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column5} name="Column5" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column6} name="Column6" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column7} name="Column7" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column8} name="Column8" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column9} name="Column9" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Column10} name="Column10" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center">
-                                            <input type="number" value=
-                                                // {parseInt(row.Column1) + parseInt(row.Column2) + parseInt(row.Column3) + parseInt(row.Column4) + parseInt(row.Column5)
-                                                // + parseInt(row.Column6) + parseInt(row.Column7) + parseInt(row.Column8) + parseInt(row.Column9) + parseInt(row.Column10)}
-                                                // {calculateNet(row,index)}
-                                                {row.Net}
-                                                // onChange={(e) => {alert("dvs") }}
-                                                disabled name="Net" className='tablefields' />
+                                                    {/* {setNet(row,index)} */}
+                                                    {/* {calculateNet(row, index)} */}
+                                                </TableCell>
+                                                <TableCell align="center" style={{ color: "Blue" }}>{process.env.REACT_APP_VAT}</TableCell>
+                                                <TableCell align="center"><input type="number" style={{ backgroundColor: row.isApprove ? "rgb(218, 247, 218)" : `` }} value={row.Advance} name="Advance" className='tablefields advance' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><input type="number"
+                                                    value={row.Balance}
+                                                    disabled name="Balance" readOnly="true" className='tablefields balance' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
+                                                <TableCell align="center"><FormControlLabel
+                                                    value={row.sup_email}
+                                                    control={<Checkbox />}
+                                                    // label={data?.permission_name}
+                                                    // label="sdv"
+                                                    // checked={allCheck?true: ``}
+                                                    onChange={(e) => { getvalue(e) }}
+                                                    className='ms-2'
+                                                    labelPlacement="end"
+                                                /></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>}
+                                </Table>
+                            </TableContainer>
+                        </div>
+                        <div className="SaveButton me-5 mb-3">
+                            <Button variant="contained" className='ms-2  savebtn' onClick={() => { SaveClicked() }} >Save</Button>
+                        </div>
+                    </DemoContainer>
+                </LocalizationProvider >
 
-                                            {/* {setNet(row,index)} */}
-                                            {/* {calculateNet(row, index)} */}
-                                        </TableCell>
-                                        <TableCell align="center">20</TableCell>
-                                        <TableCell align="center"><input type="number" value={row.Advance} name="Advance" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><input type="number"
-                                            value={row.Balance}
-                                            disabled name="Balance" readOnly="true" className='tablefields' onChange={(e) => { handleDataChange(e, index) }} /></TableCell>
-                                        <TableCell align="center"><FormControlLabel
-                                            value={row.sup_email}
-                                            control={<Checkbox />}
-                                            // label={data?.permission_name}
-                                            // label="sdv"
-                                            // checked={allCheck?true: ``}
-                                            onChange={(e) => { getvalue(e) }}
-                                            className='ms-2'
-                                            labelPlacement="end"
-                                        /></TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>}
-                        </Table>
-                    </TableContainer>
-                    <div className="SaveButton me-5">
-                        <Button variant="contained" className='ms-2 mt-1 savebtn' onClick={() => { SaveClicked() }} >Save</Button>
-                    </div>
-                </DemoContainer>
-            </LocalizationProvider >
-            {/* {JSON.stringify(Header)} */}
-            {JSON.stringify(checkedPermission)}
+
+            }
+
+            {/* {JSON.stringify(checkedPermission)} */}
 
         </>
     )

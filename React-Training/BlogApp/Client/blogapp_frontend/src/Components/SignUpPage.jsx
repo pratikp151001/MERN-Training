@@ -12,6 +12,9 @@ import UpdateUserProfile from '../Redux/Actions/UpdateUserProfile';
 import image from '../Assets/undraw_secure_login_pdn4.svg'
 import image2 from '../Assets/7070629_3293465.jpg'
 import './Signup.css'
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FETCHROLE from '../Redux/Actions/FetchRoles';
 
 
 
@@ -19,22 +22,33 @@ import './Signup.css'
 export default function SignUpPage(props) {
     const nevigate = useNavigate()
 
+
+
     const state = useSelector((state) => state.user)
+    //const [userRole, setuserRole] = useState()
+   // console.log("🚀 ~ file: SignUpPage.jsx:29 ~ SignUpPage ~ userRole:", userRole)
     console.log("🚀 ~ file: SignUpPage.jsx:15 ~ SignUpPage ~ state:", state)
+
+    const Roles = useSelector((state) => state.admin)
+    console.log("🚀 ~ file: SignUpPage.jsx:29 ~ SignUpPage ~ Roles:", Roles)
     const dispatch = useDispatch()
     const [fieldvalue, setfieldvalue] = useState({})
 
     const params = useParams()
     console.log("🚀 ~ file: SignUpPage.jsx:23 ~ SignUpPage ~ params:", params.id)
     console.log("🚀 ~ file: SignUpPage.jsx:25 ~ SignUpPage ~ state?.signup_data?.status:", state?.signup_data?.status)
-    if(params.id==undefined){
-    if (state?.signup_data?.status == 200) {
-        nevigate('/login')
+    if (params.id == undefined) {
+        if (state?.signup_data?.status == 200) {
+            nevigate('/login')
+        }
     }
-}
-    console.log("🚀 ~ file: SignUpPage.jsx:29 ~ useEffect ~ state?.view_profile?.data[0].name:", state?.view_profile?.data[0]?.name)
+
+    console.log("🚀 ~ file: SignUpPage.jsx:29 ~ useEffect ~ state?.view_profile?.data[0].name:", state?.view_profile)
     useEffect(() => {
         if (params.id != undefined) {
+
+            dispatch(FETCHROLE())
+          //  setuserRole(state?.view_profile?.data[0]?.roleId)
             setfieldvalue({
                 ...fieldvalue,
                 name: state?.view_profile?.data[0]?.name,
@@ -42,9 +56,8 @@ export default function SignUpPage(props) {
                 mobile: state?.view_profile?.data[0]?.mobile,
                 password: state?.view_profile?.data[0]?.password,
                 pincode: state?.view_profile?.data[0]?.pincode,
-                address: state?.view_profile?.data[0]?.address
-
-
+                address: state?.view_profile?.data[0]?.address,
+                roleId: state?.view_profile?.data[0]?.roleId
             })
 
         }
@@ -72,6 +85,12 @@ export default function SignUpPage(props) {
         else {
             alert("Please enter Valid Details")
         }
+    }
+
+    const handleRoleRadioChange=(e) => {
+        console.log("🚀 ~ file: SignUpPage.jsx:93 ~ handleRoleRadioChange ~ e:", e.target.value)
+        setfieldvalue({...fieldvalue,roleId:e.target.value})
+        
     }
     return (
         <>
@@ -108,15 +127,15 @@ export default function SignUpPage(props) {
                                                 className='field  m-3' />
                                         </Grid>
                                     </Grid>
-                                    </Grid>
-                                    <Grid item xs={6}>
+                                </Grid>
+                                <Grid item xs={6}>
                                     <img src={image} alt="" className='SignUpimage img-fluid pt-1' />
-                                    </Grid>
-                                    <Grid item xs={6} className='pt-0'>
+                                </Grid>
+                                <Grid item xs={6} className='pt-0'>
                                     <img src={image2} alt="" className='SignUpimage img-fluid pt-1' />
-                                    </Grid>
-                                    <Grid item xs={6} className='pt-5'>
-                                     <Grid item xs={12}>
+                                </Grid>
+                                <Grid item xs={6} className='pt-5'>
+                                    <Grid item xs={12}>
                                         <Grid item xs={12}>
                                             <TextField name="mobile" label="Mobile"
                                                 variant="outlined"
@@ -142,6 +161,20 @@ export default function SignUpPage(props) {
                                                 className='field m-3' />
                                         </Grid>
                                     </Grid>
+                                    {params.id != undefined ?
+                                        <div className="roleRadio" onChange={(e)=>{handleRoleRadioChange(e)}}>
+                                            
+                                            {Roles?.roles?.map((role, index) => (
+                                                <>
+                                                
+                                                    <input type="radio" className='ms-4' value={role.id} name="ROLES" checked={fieldvalue.roleId === role.id} />{role.role_name} 
+                                                   
+                                                </>
+                                            )
+                                            )}
+                                            
+                                        </div>
+                                        : ``}
                                 </Grid>
                             </Grid>
                             <button type='submit' variant="contained" onClick={() => { handleSignUpClcik() }} name={props.text} className='m-3'>{props.text}</button>

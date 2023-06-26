@@ -6,6 +6,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import FetchALLPermission from '../Redux/Actions/GetAllPermissions';
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
+import ADDROLE from '../Redux/Actions/AddRoleAction';
 
 
 
@@ -40,6 +42,20 @@ export default function Editroles() {
         console.log("🚀 ~ file: Editroles.jsx:14 ~ getvalue ~ e.target.label:", e.target.label)
 
     }
+
+    const AddRole=async ()=>{
+
+        const data={
+            role_name:role,
+            permissionIds:checkedPermission
+        }
+        // const addedRole=await axios.post("http://localhost:9999/addroles",data)
+        // console.log("🚀 ~ file: Editroles.jsx:52 ~ AddRole ~ addedRole:", addedRole)
+
+        dispatch(ADDROLE(data))
+    }
+
+
     return (
         <>
             <div className="mainDiv pt-5">
@@ -66,7 +82,7 @@ export default function Editroles() {
                             </Grid>
                         ))}
                     </Grid>
-                    <button onClick={()=>{alert("Efsrf")}}>ADD Role</button>
+                    <button onClick={()=>{AddRole()}}>ADD Role</button>
                 </Container>
             </div>
             {JSON.stringify(checkedPermission)}

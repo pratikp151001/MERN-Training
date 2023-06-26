@@ -15,24 +15,30 @@ const PostData = (data) => {
         //     }
         // })
 
-        const resp =await axios.post("http://localhost:9988/postdata",data)
+        const resp =await axios.post("http://localhost:9988/postdata",data,
+        {
+            headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        }
+        )
         console.log("🚀 ~ file: PostDataAction.jsx:19 ~ resp:", resp)
        
 
-        // if(resp.data.status==200){
-        //     console.log("🚀 ~ file: UserLoginAction.jsx:13 ~ returnfunction ~ status:", " INSIDEN IF")
+        if(resp.data.status==200){
+            console.log("🚀 ~ file: UserLoginAction.jsx:13 ~ returnfunction ~ status:", " INSIDEN IF")
 
-        //     dispatch({
-        //         type:suppillerActiontypes.POST_DATA_SUCCESS,
-        //         payload:resp.data.data
-        //     })
-        // }
-        // else{
-        //     dispatch({
-        //         type:suppillerActiontypes.POST_DATA_FAIL,
-        //         payload:resp.data.error
-        //     })
-        // }
+            dispatch({
+                type:suppillerActiontypes.POST_DATA_SUCCESS,
+                payload:resp.data.data
+            })
+        }
+        else{
+            dispatch({
+                type:suppillerActiontypes.POST_DATA_FAIL,
+                payload:resp.data.error
+            })
+        }
      }
 }
 

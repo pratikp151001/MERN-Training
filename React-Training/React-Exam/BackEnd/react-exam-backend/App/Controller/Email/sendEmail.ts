@@ -8,23 +8,11 @@ import Mail from "nodemailer/lib/mailer";
 
 const SendEmail = async (req: Request, res: Response) => {
 
-
-    console.log("🚀 ~ file: FetchSuppilers.ts:48 ~ FetchSuppiler ~ FetchSuppiler:", "SendEmail")
-
     try {
 
-
-
         let emails = req.body
-        console.log("🚀 ~ file: FetchSuppilers.ts:20 ~ FetchSuppiler ~ month:", emails)
-
         let sup_data: any = await EmailRepository.EmailRepository.fetchsuppillers(emails)
-        console.log("🚀 ~ file: sendEmail.ts:22 ~ SendEmail ~ sup_data:", sup_data)
-
         sendemail(sup_data)
-
-
-        // let resSup = await  SuppilerRepository.SuppilerRepository.GetSuppliers(month)
 
         let response: responseModel = {
             status: 200,
@@ -37,9 +25,6 @@ const SendEmail = async (req: Request, res: Response) => {
 
         res.json(response).status(200)
     }
-
-
-
     catch (e) {
         let response: responseModel = {
             status: 400,
@@ -63,39 +48,36 @@ const sendemail = async (data: any) => {
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'austyn.pfannerstill@ethereal.email',
-            pass: 'kja94T4B7e2bznNGNH'
+            user: 'buck11@ethereal.email',
+            pass: 'SAMDeChdFJmh6NQrS9'
         }
     });
+
+
     let html = `<table>`;
     data.map((item: any, index: number) => {
 
         html += `
         <div style="margin:50px">
-        <tr className='m-5'><th>Suppiler No. ${index + 1}</th></tr>
-         <tr style="margin:50px">
-        <th>"Suppiler Name"</th>
+        <tr><th>Suppiler No. ${index + 1}</th></tr>
+        <tr>
+        <th style="margin-left: 50px">Suppiler Name :-</th>
         <td>${item.name}</td>
         </tr>
-        <tr style="margin:50px">
-        <th>"Email Name"</th>
+        <tr>
+        <th>Email Name :-</th>
         <td>${item.email}</td>
         </tr>
         </div>`
     })
     html += ` </table>`
 
-
-
-
     let info = await transporter.sendMail({
         from: data[0].email,
         to: data[0].email,
-        subject: "About Envoice",
+        subject: "About Invoice",
         html: html
     });
-    console.log("🚀 ~ file: sendEmail.ts:79 ~ sendemail ~ info:", info)
-
 }
 
 export default { SendEmail }

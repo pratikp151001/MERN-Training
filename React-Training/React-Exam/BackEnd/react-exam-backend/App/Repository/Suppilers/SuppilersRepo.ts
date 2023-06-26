@@ -6,9 +6,7 @@ const prisma = new PrismaClient()
 
 class UserRepository {
     async GetSuppliers(month: string) {
-        console.log("🚀 ~ file: SuppilersRepo.ts:9 ~ UserRepository ~ GetSuppliers ~ month:", month)
         try {
-            // console.log("🚀 ~ file: SuppilersRepo.ts:12 ~ UserRepository ~ GetSuppliers ~ prisma.invoice.findMany():",await prisma.invoice.findMany())
             if ((await prisma.invoice.findMany())) {
                 let Suppilers = await prisma.suppiler.findMany({
                     include: {
@@ -29,7 +27,6 @@ class UserRepository {
 
 
     async PostData(data: any) {
-        // console.log("🚀 ~ file: SuppilersRepo.ts:25 ~ UserRepository ~ PostData ~ data:", data)
         try {
             let Suppilers = await prisma.invoice.createMany(
                 {
@@ -60,15 +57,12 @@ class UserRepository {
             return Suppilers;
         }
         catch (e) {
-
-            console.log("🚀 ~ file: SuppilersRepo.ts:60 ~ UserRepository ~ PostData ~ e:", e)
             return e
         }
     }
 
 
     async UpdateData(data: any,id:string) {
-         console.log("🚀 ~ file: SuppilersRepo.ts:25 ~ UserRepository ~ PostData ~ data:", data)
         try {
             let Suppilers = await prisma.invoice.update(
                 { where:{
@@ -101,15 +95,9 @@ class UserRepository {
             return Suppilers;
         }
         catch (e) {
-
-            console.log("🚀 ~ file: SuppilersRepo.ts:60 ~ UserRepository ~ PostData ~ e:", e)
             return e
         }
     }
-
-
-
-
 }
 
 export default new UserRepository;

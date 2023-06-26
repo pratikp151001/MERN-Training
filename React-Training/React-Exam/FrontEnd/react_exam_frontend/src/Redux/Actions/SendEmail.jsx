@@ -8,7 +8,13 @@ const EmailActions = (data) => {
     return async function (dispatch) {
         dispatch({ type: EmailActionsType.SEND_EMAIL_REQUEST })
 
-        const resp =await axios.post("http://localhost:9988/sendemails",data)
+        const resp =await axios.post("http://localhost:9988/sendemails",data,
+        {
+            headers: {
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        }
+        )
         console.log("🚀 ~ file: viewProfile.jsx:11 ~ returnfunction ~ res:", "resp")
 
         // if(resp.data.status==200){
